@@ -4,14 +4,14 @@
 		</div>
 		<div class='header_center'>
 			<span class="main_menu">
-				趨勢投票
+				<%=link_to '趨勢投票', root_url %>
 			</span>    		
 		</div>
 		<div class='header_right'>
 			<% if authenticated? %>
 				<ul>
 					<li>
-						<%=link_to '新增投票', class: "add_item" %>
+						<%=link_to '新增投票', new_poll_path, class: "add_item" %>
 					</li>											
 					<li>
 						<%=link_to image_tag(User.find(session[:user_id]).icon.url(:thumb), size: '42x42'),{:controller => "user", :action => "index", :user_id=>session[:user_id]}%>
@@ -24,7 +24,7 @@
 				
 				<ul id="before_login_ul">			
 					<li>
-						<%=link_to '新增投票', '#',class: "add_item" %>
+						<%=link_to '新增投票', new_poll_path, class: "add_item" %>
 					</li>	
 					<li>				
 						<%= link_to "facebook登入", new_facebook_path, class: 'login_fb' %>
@@ -40,22 +40,3 @@
 		</div>			
 	</div>	
 </div>
-
-<script type="text/javascript">
-$(document).ready(function($){
-	$('#mega-menu-1').dcMegaMenu({
-		rowItems: '1',
-		speed: 'fast',
-		effect: 'slide'
-	});
-	
-	$( ".login_fb" ).bind( "click", function( event ) {
-	
-		$("#on_login_div").css({'display': "block"});
-	
-		$("#before_login_ul").css({'display': "none"});
-	
-	});	
-	
-});
-</script>
