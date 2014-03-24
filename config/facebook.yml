@@ -1,0 +1,9 @@
+development: &defaults
+  client_id: 177470785667884
+  client_secret: c62165f523e89e9aaffe767adb035633
+  scope: email, offline_access, publish_actions
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

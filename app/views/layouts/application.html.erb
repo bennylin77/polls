@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>趨勢投票 Polls Trends</title>
+  <meta property="fb:app_id" content="<%= Facebook.config[:client_id] %>">
+
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <!--[if IE]>
+    <script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+    <%= render 'layouts/header' %>	
+    <%= yield %>             
+ 	<a href="#" class="scrollup">上拉</a>
+
+    <script src="http://connect.facebook.net/zh_TW/all.js"></script>
+    <script>
+      FB.init({
+        appId: "<%= Facebook.config[:client_id] %>",
+        cookie: true,
+        xfbml: true,
+        oauth: true
+      });
+    </script>
+	<div id="fb-root"></div>
+    <script type="text/javascript">
+		(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=<%= Facebook.config[:client_id] %>";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+      $(function () {
+        <% if flash[:error] %>
+          $.gritter.add({
+            title: "<%= flash[:error][:title] %>",
+            text : "<%= flash[:error][:message] %>",
+            image: "<%= flash[:error][:image] %>",
+            time : 5000
+          });
+        <% elsif flash[:notice] %>      
+          $.gritter.add({
+            title: "<%= flash[:notice][:title] %>",
+            text : "<%= flash[:notice][:message] %>",
+            image: "<%= flash[:notice][:image] %>",            
+            time : 5000
+          });
+        <% end %>
+      });
+     // scroll to top  
+      $(document).ready(function(){
+        $(window).scroll(function(){
+            if ($(this).scrollTop() > 100) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+        $('.scrollup').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            return false;
+        }); 
+      });      
+    </script>
+  </body>
+</html>
