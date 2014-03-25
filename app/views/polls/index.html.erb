@@ -7,7 +7,7 @@
 			<%= render_chart(poll.chart, 'chart_'+poll.id.to_s) %>
 		</div>	
 		<div class="td">	
-			<%= link_to '投票', edit_poll_path(poll) %>																						
+			<%= link_to '投票', {controller: 'polls', action: 'vote', id: poll.id} %>																						
 		</div>	
 		<div class="td">
 			<%= link_to '趨勢', poll %>							

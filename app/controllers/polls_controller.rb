@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class PollsController < ApplicationController
-  before_filter :checkLogin, only: [:new, :create]
+  before_filter :checkLogin, only: [:new, :create, :vote]
+  
   def index
     @polls = Poll.paginate(:per_page => 5, :page => params[:page]).order('created_at DESC')
     @polls.each do |p|
@@ -24,12 +25,42 @@ class PollsController < ApplicationController
   def show
     @poll = Poll.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @poll }
+  end
+  
+  def vote
+    @poll = Poll.find(params[:id])
+    if request.post?
+      
+      user_option=UserOption.where(user_id: session[:user_id], poll_option_id: params[:option])
+      
+      if user_option.blank?   
+        user=User.find(session[:user_id])
+        user_option=UserOption.new
+        user_option.poll_option=PollOption.find(params[:option])
+        user_option.user=user
+        user_option.src_ip=request.remote_ip
+        user_option.save!
+        
+        flash[:notice] = {
+            :title   => "已成功投票!",
+            :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+        }       
+      else
+        if 3600-(Time.now-user_option.first.created_at)<=0
+        
+        
+        
+        else
+          flash[:notice] = {
+              :title   => "目前無法投票!",
+              :message => "\""+@poll.title+"\" 已投過票, "+((3600-(Time.now-user_option.first.created_at))/60).to_i.to_s+"分鐘後可再重新投票"          
+          }    
+        end      
+      end  
+      redirect_to root_url
     end
   end
-
+  
   def new
     @poll = Poll.new
 
