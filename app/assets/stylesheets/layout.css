@@ -5,6 +5,18 @@ body
     padding-top: 100px;
     background-color: #D4D4D4
 }	
+
+body > .main
+{
+	width: 1000px;
+  	margin:10px auto;
+  	padding-top: 10px;
+  	padding-left: 10px;
+
+  	font-size: 17px;
+  	font-weight: bold;
+  	font-family: Arial Black;	
+}
 .scrollup{
     width:150px;
     height:150px;
@@ -16,90 +28,7 @@ body
     text-indent:-9999px;
     background: url(to_top.png) no-repeat;
 }
-.label_new
-{
-	background-color:#c62d1f;
-	-webkit-border-top-left-radius:5px;
-	-moz-border-radius-topleft:5px;
-	border-top-left-radius:5px;
-	-webkit-border-top-right-radius:5px;
-	-moz-border-radius-topright:5px;
-	border-top-right-radius:5px;
-	-webkit-border-bottom-right-radius:5px;
-	-moz-border-radius-bottomright:5px;
-	border-bottom-right-radius:5px;
-	-webkit-border-bottom-left-radius:5px;
-	-moz-border-radius-bottomleft:5px;
-	border-bottom-left-radius:5px;
-	text-indent:0px;
-	display:inline-block;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	font-style:normal;
-	height:20px;
-	line-height:20px;
-	width:40px;
-	text-decoration:none;
-	text-align:center;
-	margin: 0px auto 1px auto;
-}
-.label_end
-{
-	background-color:#335CD6;
-	-webkit-border-top-left-radius:5px;
-	-moz-border-radius-topleft:5px;
-	border-top-left-radius:5px;
-	-webkit-border-top-right-radius:5px;
-	-moz-border-radius-topright:5px;
-	border-top-right-radius:5px;
-	-webkit-border-bottom-right-radius:5px;
-	-moz-border-radius-bottomright:5px;
-	border-bottom-right-radius:5px;
-	-webkit-border-bottom-left-radius:5px;
-	-moz-border-radius-bottomleft:5px;
-	border-bottom-left-radius:5px;
-	text-indent:0px;
-	display:inline-block;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	font-style:normal;
-	height:20px;
-	line-height:20px;
-	width:40px;
-	text-decoration:none;
-	text-align:center;
-	margin: 0px auto 1px auto;
-}
-.label_type
-{
-	background-color:#9C4631;
-	-webkit-border-top-left-radius:5px;
-	-moz-border-radius-topleft:5px;
-	border-top-left-radius:5px;
-	-webkit-border-top-right-radius:5px;
-	-moz-border-radius-topright:5px;
-	border-top-right-radius:5px;
-	-webkit-border-bottom-right-radius:5px;
-	-moz-border-radius-bottomright:5px;
-	border-bottom-right-radius:5px;
-	-webkit-border-bottom-left-radius:5px;
-	-moz-border-radius-bottomleft:5px;
-	border-bottom-left-radius:5px;
-	text-indent:0px;
-	display:inline-block;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:20px;
-	font-style:normal;
-	height:24px;
-	line-height:24px;
-	width:40px;
-	text-decoration:none;
-	text-align:center;
-	margin: 0px auto 1px auto;
-}
+
 .settings
 {
 	font-weight: bold;

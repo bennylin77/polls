@@ -16,4 +16,14 @@ class ApplicationController < ActionController::Base
     #current_user.try(:destroy)
     redirect_to root_url
   end  
+  
+  def checkLogin
+    unless User.find_by_id(session[:user_id])
+      flash[:notice] = {
+          :title   => "請先登入, 謝謝!",
+          :message => "您沒有操作的權限 "          
+      }        
+      redirect_to root_url
+    end    
+  end   
 end

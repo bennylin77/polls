@@ -1,47 +1,22 @@
 <section class="table" style="max-width: 500px">
-	<div class="tr" style="margin-top: 5px; width: 500px;">	
-
-	</div>	
-	<div class="tr" style="margin-bottom: 10px; margin-top: 10px;">	
-    <div class="td" style="font-weight: bold; font-size: 20px; text-align: center; width: 500px; font-family: Arial Black;">	
-	</div>							
-	</div>			
-	<div class="tr" style="margin-bottom: 10px;">
-    <div class="td" style="font-weight: bold; font-size: 20px; text-align: center; width: 500px; font-family: Arial Black;">	
-	</div>	
-	</div>	
-	<div class="tr" style="margin-bottom: 10px;">
-    <div class="td" style=" font-size: 25px; text-align: center; width: 500px">
-	</div>							
-	</div>		
-	<div class="tr" style="margin-bottom: 10px; width: 500px;">	
-	<div class="td" style="padding-left: 10px;">																				
-	</div>	
-	<div class="td">							
-	</div>	
+<% @polls.each do |poll| %>	
+	<div class="tr" style="">
+		
+		<div class="td">	
+			<div id='chart_<%=poll.id%>'></div>
+			<%= render_chart(poll.chart, 'chart_'+poll.id.to_s) %>
+		</div>	
+		<div class="td">	
+			<%= link_to '投票', edit_poll_path(poll) %>																						
+		</div>	
+		<div class="td">
+			<%= link_to '趨勢', poll %>							
+		</div>	
+		<div class="td">	
+			<%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除這個投票嗎? (無法回復)' } %>						
+		</div>						
 	</div>
-	<div class="tr" style="">			
-	</div>
-	</section> 
-
-
-
-
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @polls.each do |poll| %>
-  <tr>
-    <td><%= link_to '投票', edit_poll_path(poll) %></td>
-    <td><%= link_to '趨勢', poll %></td>
-    <td><%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除這個投票嗎? (無法回復)' } %></td>
-  </tr>
-<% end %>
-</table>
-
-
+<% end %>	
+</section> 
+<br>
 <div class="apple_pagination"><%= will_paginate(@polls) %></div>

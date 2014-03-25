@@ -1,7 +1,24 @@
+# encoding: UTF-8
 class PollsController < ApplicationController
-
+  before_filter :checkLogin, only: [:new, :create]
   def index
-    @polls = Poll.paginate(:per_page => 5, :page => params[:page]).order('created_at')
+    @polls = Poll.paginate(:per_page => 5, :page => params[:page]).order('created_at DESC')
+    @polls.each do |p|
+      data_table = GoogleVisualr::DataTable.new
+      data_table.new_column('string', 'Year' )
+      data_table.new_column('number', 'Sales')
+      
+      options=Array.new
+      p.poll_options.each do |o|
+        options << [o.title, 500]
+      end      
+      data_table.add_rows(options)
+      option = { width: 800, height: 300, title: p.title,  isStacked: true}
+      p.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)
+
+    end
+    
+    
   end
 
   def show
@@ -16,10 +33,6 @@ class PollsController < ApplicationController
   def new
     @poll = Poll.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @poll }
-    end
   end
 
   def edit
@@ -27,31 +40,21 @@ class PollsController < ApplicationController
   end
 
   def create
-    @poll = Poll.new(params[:poll])
-
-    respond_to do |format|
-      if @poll.save
-        format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
-        format.json { render json: @poll, status: :created, location: @poll }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @poll.errors, status: :unprocessable_entity }
+    user=User.find(session[:user_id])      
+    @poll  = Poll.new(title: params[:poll][:title], description: params[:poll][:description], kind: GLOBAL_VAR["general"]) 
+    @poll.user = user
+    params[:option].each do |key, value| 
+      unless(params[:option][key].blank?)
+        @poll.poll_options<<PollOption.new(title: params[:option][key])  
       end
-    end
-  end
-
-  def update
-    @poll = Poll.find(params[:id])
-
-    respond_to do |format|
-      if @poll.update_attributes(params[:poll])
-        format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @poll.errors, status: :unprocessable_entity }
-      end
-    end
+    end    
+    @poll.save!
+    redirect_to root_url
+    
+    rescue ActiveRecord::RecordInvalid     
+      if !@poll.valid?             
+        render :action=>:new
+      end  
   end
 
   def destroy
