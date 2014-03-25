@@ -75,7 +75,9 @@ class PollsController < ApplicationController
   
   def new
     @poll = Poll.new
-
+    if request.xhr?
+      render layout: false 
+    end   
   end
 
   def edit
