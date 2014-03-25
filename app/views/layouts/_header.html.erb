@@ -1,24 +1,20 @@
 <div class="header">
 	<div class="header_inner">		
 		<div class='header_left'>
-		</div>
-		<div class='header_center'>
-			<span class="main_menu">
-				<%=link_to '投票', root_url %>
-			</span>    		
+			<%=link_to '公民投票', root_url, class: "main_title" %>
 		</div>
 		<div class='header_right'>
 			<% if authenticated? %>
 				<ul>
 					<li>
 						<%=link_to '新增主題', new_poll_path, class: "add_item fancybox open_ajax" %>
-					</li>											
+					</li>			
+					<li>
+						<%= link_to "登出", facebook_path, :method => :delete, class: 'logout' %>
+					</li>														
 					<li>
 						<%=link_to image_tag(User.find(session[:user_id]).icon.url(:thumb), size: '42x42'),{:controller => "user", :action => "index", :user_id=>session[:user_id]}%>
-					</li>	
-					<li>
-						<%= link_to "登出", facebook_path, :method => :delete, class: 'button_g', style: 'margin-bottom: 5px; display: block;' %>
-					</li>						  
+					</li>							  
 				</ul>						
 			<% else %>
 				
