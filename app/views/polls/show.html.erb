@@ -1,5 +1,19 @@
-<p id="notice"><%= notice %></p>
+<div id="main_center">
+	<p id="notice"><%= notice %></p>
 
+	<div>pie chart</div>
 
-<%= link_to 'Edit', edit_poll_path(@poll) %> |
-<%= link_to 'Back', polls_path %>
+	<div id="line_chart">line serial</div>
+	<table>
+	  <tr>
+	    <td>
+	      <%= render partial: "frame1"%>
+	    </td>
+	    <td>
+	      <%= render partial: "frame2"%>
+	    </td>
+	  </tr>
+	</table>
+	<%= link_to 'Edit', edit_poll_path(@poll) %> |
+	<%= link_to 'Back', polls_path %>
+</div >
