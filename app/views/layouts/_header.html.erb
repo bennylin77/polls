@@ -11,7 +11,7 @@
 			<% if authenticated? %>
 				<ul>
 					<li>
-						<%=link_to '新增投票', new_poll_path, class: "add_item fancybox open_ajax" %>
+						<%=link_to '新增主題', new_poll_path, class: "add_item fancybox open_ajax" %>
 					</li>											
 					<li>
 						<%=link_to image_tag(User.find(session[:user_id]).icon.url(:thumb), size: '42x42'),{:controller => "user", :action => "index", :user_id=>session[:user_id]}%>

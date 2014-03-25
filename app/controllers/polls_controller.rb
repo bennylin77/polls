@@ -6,8 +6,8 @@ class PollsController < ApplicationController
     @polls = Poll.paginate(:per_page => 5, :page => params[:page]).order('created_at DESC')
     @polls.each do |p|
       data_table = GoogleVisualr::DataTable.new
-      data_table.new_column('string', 'Year' )
-      data_table.new_column('number', 'Sales')
+      data_table.new_column('string', '選項' )
+      data_table.new_column('number', '人')
       
       options=Array.new
       p.poll_options.each do |o|
@@ -30,8 +30,7 @@ class PollsController < ApplicationController
   
   def vote
     @poll = Poll.find(params[:id])
-    if request.post?
-      
+    if request.post?  
       user_option=nil
       @poll.poll_options.each do |o|
         if !UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first.blank?
@@ -72,6 +71,9 @@ class PollsController < ApplicationController
       end  
       redirect_to root_url
     end
+    if request.xhr?
+      render layout: false 
+    end  
   end
   
   def new
@@ -105,11 +107,9 @@ class PollsController < ApplicationController
 
   def destroy
     @poll = Poll.find(params[:id])
+    @poll.poll_options.clear
     @poll.destroy
 
-    respond_to do |format|
-      format.html { redirect_to polls_url }
-      format.json { head :no_content }
-    end
+    redirect_to root_url
   end
 end
