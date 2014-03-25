@@ -56,12 +56,14 @@ ActiveRecord::Schema.define(:version => 20140324070857) do
   create_table "user_options", :force => true do |t|
     t.integer  "user_id"
     t.integer  "poll_option_id"
+    t.string   "src_ip"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "email"
+    t.integer  "age"
     t.string   "icon_file_name"
     t.string   "icon_content_type"
     t.integer  "icon_file_size"
