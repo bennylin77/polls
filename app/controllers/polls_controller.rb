@@ -12,7 +12,7 @@ class PollsController < ApplicationController
       options=Array.new
       p.poll_options.each do |o|
         
-        options << [o.title, o.user_options.size]
+        options << [o.title, 500]
       end      
       data_table.add_rows(options)
       option = { width: 800, height: 300, title: p.title,  isStacked: true}
@@ -32,8 +32,13 @@ class PollsController < ApplicationController
     @poll = Poll.find(params[:id])
     if request.post?
       
-      user_option=UserOption.where(user_id: session[:user_id], poll_option_id: params[:option])
-      
+      user_option=nil
+      @poll.poll_options.each do |o|
+        if !UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first.blank?
+          user_option=UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first  
+        end
+      end
+            
       if user_option.blank?   
         user=User.find(session[:user_id])
         user_option=UserOption.new
@@ -47,14 +52,21 @@ class PollsController < ApplicationController
             :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
         }       
       else
-        if 3600-(Time.now-user_option.first.created_at)<=0
-        
-        
-        
+        if 3600-(Time.now-user_option.updated_at)<=0
+          user_option.user_option_history=UserOptionHistory.find_or_initialize_by_user_option_id(user_option.id)
+          user_option.user_option_history.poll_option=user_option.poll_option
+          user_option.user_option_history.save!
+          user_option.poll_option=PollOption.find(params[:option])
+          user_option.src_ip=request.remote_ip   
+          user_option.save!
+          flash[:notice] = {
+            :title   => "已成功投票!",
+            :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+          }              
         else
           flash[:notice] = {
               :title   => "目前無法投票!",
-              :message => "\""+@poll.title+"\" 已投過票, "+((3600-(Time.now-user_option.first.created_at))/60).to_i.to_s+"分鐘後可再重新投票"          
+              :message => "\""+@poll.title+"\" 已投過票, "+((3600-(Time.now-user_option.updated_at))/60).to_i.to_s+"分鐘後可再重新投票"          
           }    
         end      
       end  
