@@ -11,7 +11,8 @@ class PollsController < ApplicationController
       
       options=Array.new
       p.poll_options.each do |o|
-        options << [o.title, 500]
+        
+        options << [o.title, o.user_options.size]
       end      
       data_table.add_rows(options)
       option = { width: 800, height: 300, title: p.title,  isStacked: true}
