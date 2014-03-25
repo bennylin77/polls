@@ -2,7 +2,7 @@
 class Poll < ActiveRecord::Base
   attr_accessible :title, :description, :kind
   attr_accessor  :chart
-  has_many :poll_options
+  has_many :poll_options, dependent: :destroy 
   belongs_to :user
   
   validates :title, :presence =>{:message => "請填寫投票主題"}
