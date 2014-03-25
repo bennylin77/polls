@@ -17,5 +17,6 @@ gem 'fb_graph'
 gem 'will_paginate'
 gem 'paperclip', "~> 3.0"
 gem 'paperclip-compression'
+gem "google_visualr", ">= 2.1"
 
 gem 'whenever', :require => false

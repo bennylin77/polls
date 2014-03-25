@@ -1,0 +1,18 @@
+<%=form_tag do%>
+	<div class="field">
+    <label><%=@poll.title%></label><br />
+    <%=@poll.description%>
+  	</div>
+  	<%@poll.poll_options.each do |o|%>
+	    <div class="field">
+	    	
+	    <label><%=o.title%></label>
+		<%=radio_button_tag 'option', o.id%>
+		
+	    </div>
+    <%end%>
+    <%=hidden_field_tag 'id', @poll.id%>
+  	<div class="actions">	
+	<%=submit_tag "送出"%>
+	</div>
+<%end%>

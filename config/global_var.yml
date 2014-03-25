@@ -1,0 +1,12 @@
+defaults: &defaults
+
+  general: 0         
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults
+
+test:
+  <<: *defaults
