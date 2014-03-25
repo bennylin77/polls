@@ -22,4 +22,14 @@ module ApplicationHelper
           end
       end
   end
+  
+  def pollCount(hash={})
+    @return=0
+    hash[:poll].poll_options.each do |o|
+      @return=o.user_options.size+@return
+    end
+    @return
+  end  
+  
+  
 end

@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class PollsController < ApplicationController
   before_filter :checkLogin, only: [:new, :create, :vote]
+  before_filter :checkUser,  only: [:destroy]
   
   def index
     @polls = Poll.paginate(:per_page => 5, :page => params[:page]).order('created_at DESC')
@@ -15,9 +16,8 @@ class PollsController < ApplicationController
         options << [o.title, o.user_options.size]
       end      
       data_table.add_rows(options)
-      option = { width: 800, height: 300, title: p.title,  isStacked: true}
+      option = { width: 600, height: 300}
       p.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)
-
     end
     
     
@@ -78,9 +78,17 @@ class PollsController < ApplicationController
   
   def new
     @poll = Poll.new
+    @user=User.find(session[:user_id])
+
     if request.xhr?
-      render layout: false 
-    end   
+       if 3600-(Time.now-@user.polls.last.updated_at)<=0
+        render layout: false 
+       else
+        render template: "polls/newLimit", layout: false 
+       end  
+    else
+      redirect_to root_url   
+    end          
   end
 
   def edit

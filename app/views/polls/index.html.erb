@@ -1,28 +1,55 @@
-<section class="table" style="max-width: 500px">
+<section class="table">
 <% @polls.each do |poll| %>	
-	<div class="tr" style="">
-		
-		<div class="td">	
-			<div id='chart_<%=poll.id%>'></div>
-			<%= render_chart(poll.chart, 'chart_'+poll.id.to_s) %>
-		</div>	
-		<div class="td">
-			<% if userOptionBlank(id: poll.id)==1 %>	
-				<%= link_to '投票', {controller: 'polls', action: 'vote', id: poll.id}, class:"fancybox open_ajax"  %>		
-			<% end %>
-			<% if userOptionBlank(id: poll.id)==2 %>	
-				<%= link_to '重新投票', {controller: 'polls', action: 'vote', id: poll.id} %>		
-			<% end %>
-			<% if userOptionBlank(id: poll.id)==3 %>	
-				<%= link_to '已投票', '#' %>		
-			<% end %>
-		</div>	
-		<div class="td">
-			<%= link_to '趨勢', poll %>							
-		</div>	
-		<div class="td">	
-			<%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除 "'+poll.title+'" 這個主題嗎? (無法回復)' } %>						
-		</div>						
+	<div class="tr" style="width:900px;
+						   margin-top:15px;
+						   background:#FFFFFF;
+						   border-radius: 10px 10px 10px 10px;
+						   -moz-border-radius: 10px 10px 10px 10px;
+						   -webkit-border-radius: 10px 10px 10px 10px;
+						   border: 0px solid #000000;">		
+		<div class="tr" style="padding-left:10px; padding-top: 10px;">
+			<div class="td" style=" font-size: 20px; width: 600px;">
+				<div class="td" style="">		
+					<%=link_to image_tag(User.find(poll.user.id).icon.url(:thumb), size: '42x42'),{:controller => "user", :action => "index", :user_id=>poll.user.id}%>		
+				</div>	
+				<div class="td" style="padding-left:10px; font-size: 20px;">		
+					<%= poll.title%>
+				</div>		
+				<div class="td" style="padding-left:10px; font-size: 10px;">		
+					<%= time_ago_in_words(poll.created_at)%>之前
+				</div>
+			</div>					
+			<div class="td" style=" font-size: 18px;">		
+				<%= pollCount(poll: poll) %>人投過
+			</div>			
+		</div>		
+		<div class="tr" style="padding-left:10px;">				   
+			<div class="td" style="">		
+				<div id='chart_<%=poll.id%>'></div>
+				<%= render_chart(poll.chart, 'chart_'+poll.id.to_s) %>	
+			</div>	
+			<div class="td" style="margin-left: 20px;" >
+				<div class="tr">		
+					<% if userOptionBlank(id: poll.id)==1 %>	
+						<%= link_to '投票', {controller: 'polls', action: 'vote', id: poll.id}, class:"poll_button fancybox open_ajax" %>		
+					<% end %>
+					<% if userOptionBlank(id: poll.id)==2 %>	
+						<%= link_to '重新投票', {controller: 'polls', action: 'vote', id: poll.id}, class:"poll_button fancybox open_ajax" %>		
+					<% end %>
+					<% if userOptionBlank(id: poll.id)==3%>	
+						<%= link_to '已投票', '#', class: "poll_button" %>		
+					<% end %>
+				</div>
+				<div class="tr">
+					<%= link_to '趨勢', poll, class: "poll_button" %>							
+				</div>
+				<% if poll.user.id==session[:user_id]%>	
+				<div class="tr">
+					<%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除 "'+poll.title+'" 這個主題嗎? (無法回復)' }, class: "poll_button"  %>						
+				</div>
+				<%end%>
+			</div>	
+		</div>								
 	</div>
 <% end %>	
 </section> 

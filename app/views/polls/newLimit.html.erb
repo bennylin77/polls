@@ -1,0 +1,3 @@
+<div style="font-size: 20px;">
+每小時只能新增一個主題, <%=((3600-(Time.now-@user.polls.last.updated_at))/60).to_i.to_s%>分鐘後可再重新投票
+</div>

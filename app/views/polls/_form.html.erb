@@ -10,34 +10,36 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label '投票主題' %><br />
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label '投票描述' %><br />
-    <%= f.text_field :description %>
-  </div>
-  
-  
-  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
-  	<%= f.label "投票選項"  %><br /> 
-  </div>
-  <div class="tr" id="optionField">
-  </div>
-  <div class="tr">
-	<div class="td">
-	<input type="button" onclick="addOption()" name="add" value="新增選項" class="button_small_b"/>
-	</div>
-	<div class="td">		
-	<input type="button" onclick="delOption()" name="add" value="刪除選項" class="button_small_b"/>
-	</div>
-  </div>
-
-  <div class="actions">
-    <%= f.submit '新增投票' %>
-  </div>
+  <section class="table">	
+	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
+	    <%= f.label '投票主題' %>
+	  </div>  
+	  <div class="tr" style="padding-bottom: 10px;"> 
+	    <%= f.text_field :title %>
+	  </div>  
+	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
+	    <%= f.label '投票描述' %>
+	  </div>
+	  <div class="tr" style="padding-bottom: 10px;">  
+	    <%= f.text_field :description %>
+	  </div>  
+	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
+	  	<%= f.label "投票選項"  %><br /> 
+	  </div>
+	  <div class="tr" id="optionField">
+	  </div>
+	  <div class="tr">
+		<div class="td">
+		<input type="button" onclick="addOption()" name="add" value="新增選項" class="button_small_b"/>
+		</div>
+		<div class="td">		
+		<input type="button" onclick="delOption()" name="add" value="刪除選項" class="button_small_b"/>
+		</div>
+	  </div>
+	  <div class="actions">
+	    <%= f.submit '新增投票' %>
+	  </div>
+  <section>	 
 <% end %>
 
 
@@ -47,12 +49,13 @@
 
 	function addOption() 
 	{		
-		var newDiv = $(document.createElement('div')).attr({ id: 'option_block_' + option_index.toString(), class: 'tr'});
+		var newDiv = $(document.createElement('div')).attr({ id: 'option_block_' + option_index.toString(), class: 'tr', style: 'padding-bottom: 5px;'});
 		newDiv.append("<input id='option_"+
 					  option_index.toString()+
 					  "' name='option["+
 					  option_index.toString()+ 
-					  "]' size='10' type='text' placeholder='選項' "+
+					  "]' type='text' placeholder='選項"+
+					  (option_index+1).toString()+
 					  "'/>"
 					 );	
 		newDiv.appendTo("#optionField");	
