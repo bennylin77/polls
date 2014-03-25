@@ -23,7 +23,12 @@ class ApplicationController < ActionController::Base
           :title   => "請先登入, 謝謝!",
           :message => "您沒有操作的權限 "          
       }        
-      redirect_to root_url
+  
+      if request.xhr?
+        render template: "layouts/checkLogin", layout: false
+      else
+        redirect_to root_url   
+      end  
     end    
   end   
 end

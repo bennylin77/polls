@@ -8,20 +8,20 @@
 		</div>	
 		<div class="td">
 			<% if userOptionBlank(id: poll.id)==1 %>	
-				<%= link_to '投票', {controller: 'polls', action: 'vote', id: poll.id} %>		
+				<%= link_to '投票', {controller: 'polls', action: 'vote', id: poll.id}, class:"fancybox open_ajax"  %>		
 			<% end %>
 			<% if userOptionBlank(id: poll.id)==2 %>	
 				<%= link_to '重新投票', {controller: 'polls', action: 'vote', id: poll.id} %>		
 			<% end %>
 			<% if userOptionBlank(id: poll.id)==3 %>	
-				<%= link_to '已投票', {controller: 'polls', action: 'index'} %>		
+				<%= link_to '已投票', '#' %>		
 			<% end %>
 		</div>	
 		<div class="td">
 			<%= link_to '趨勢', poll %>							
 		</div>	
 		<div class="td">	
-			<%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除這個投票嗎? (無法回復)' } %>						
+			<%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除 "'+poll.title+'" 這個主題嗎? (無法回復)' } %>						
 		</div>						
 	</div>
 <% end %>	
