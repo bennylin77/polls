@@ -1,35 +1,36 @@
-<section class="table">
-<% @polls.each do |poll| %>	
-	<div class="tr" style="width:900px;
-						   margin-top:15px;
+<section class="table" style="width: 100%;">
+<% @polls.each do |poll| %>		
+	<div class="tr" style="margin-top:20px;
 						   background:#FFFFFF;
 						   border-radius: 10px 10px 10px 10px;
 						   -moz-border-radius: 10px 10px 10px 10px;
 						   -webkit-border-radius: 10px 10px 10px 10px;
 						   border: 0px solid #000000;">		
-		<div class="tr" style="padding-left:10px; padding-top: 10px;">
-			<div class="td" style=" font-size: 20px; width: 600px;">
-				<div class="td" style="">		
+		<div class="tr" style="padding-top: 10px; width:100%">
+			<div style="width: 500px; margin: 0 auto ;">
+				<div class="td">		
 					<%=link_to image_tag(User.find(poll.user.id).icon.url(:thumb), size: '42x42'),{:controller => "user", :action => "index", :user_id=>poll.user.id}%>		
 				</div>	
-				<div class="td" style="padding-left:10px; font-size: 20px;">		
+				<div class="td" style="padding-left:20px; line-height: 26px; font-size: 26px; font-family: Microsoft JhengHei">		
 					<%= poll.title%>
 				</div>		
-				<div class="td" style="padding-left:10px; font-size: 10px;">		
+				<div class="td" style="padding-left:10px; font-size: 10px; width: 85px;">		
 					<%= time_ago_in_words(poll.created_at)%>之前
-				</div>
-			</div>					
+				</div>	
+			</div>	
+			<!--			
 			<div class="td" style=" font-size: 18px;">		
 				<%= pollCount(poll: poll) %>人投過
-			</div>			
+			</div>
+			-->			
 		</div>		
-		<div class="tr" style="padding-left:10px;">				   
-			<div class="td" style="">		
+		<div class="tr" style="padding-left:20px; padding-bottom:40px;">				   
+			<div class="td" style="width: 600px; ">		
 				<div id='chart_<%=poll.id%>'></div>
 				<%= render_chart(poll.chart, 'chart_'+poll.id.to_s) %>	
 			</div>	
-			<div class="td" style="margin-left: 20px;" >
-				<div class="tr">		
+			<div class="td" style="">
+				<div class="tr" style="">		
 					<% if userOptionBlank(id: poll.id)==1 %>	
 						<%= link_to '投票', {controller: 'polls', action: 'vote', id: poll.id}, class:"poll_button fancybox open_ajax" %>		
 					<% end %>
@@ -37,18 +38,37 @@
 						<%= link_to '重新投票', {controller: 'polls', action: 'vote', id: poll.id}, class:"poll_button fancybox open_ajax" %>		
 					<% end %>
 					<% if userOptionBlank(id: poll.id)==3%>	
-						<%= link_to '已投票', '#', class: "poll_button" %>		
 					<% end %>
 				</div>
-				<div class="tr">
+				<!--
+				<div class="tr" style="">
 					<%= link_to '趨勢', poll, class: "poll_button" %>							
 				</div>
+				-->
 				<% if poll.user.id==session[:user_id]%>	
-				<div class="tr">
+				<div class="tr" style="">
 					<%= link_to '刪除', poll, method: :delete, data: { confirm: '您確定要刪除 "'+poll.title+'" 這個主題嗎? (無法回復)' }, class: "poll_button"  %>						
 				</div>
-				<%end%>
+				<%end%>				
 			</div>	
+			<div class="td" style="">		
+				<div id='chart_<%=poll.id+1%>'></div>
+				<%= render_chart(poll.chart, 'chart_'+(poll.id+1).to_s) %>	
+			</div>				
+		</div>	
+		<div class="tr">
+			<div style="width:<%=(poll.poll_options.size)*320%>px; margin: 0 auto;">
+			<%poll.poll_options.each do |o|%>
+			<div class="td" style="margin-left: 30px;" >
+				<div class="tr" style="margin-bottom: 5px; font-size: 14px; font-family: Microsoft JhengHei" >
+					選擇 '<%= o.title%>' 的回應
+				</div>	
+				<div class="tr" style="width: 320px;" >
+					<div class="fb-comments" data-href="<%=host%>/polls/show?id=<%=poll.id%>&poll_option_id=<%=o.id%>" data-numposts="5" data-colorscheme="dark" data-width="310px"></div>
+				</div>	
+			</div>	
+			<%end%>	
+			</div>	   	
 		</div>								
 	</div>
 <% end %>	
