@@ -5,4 +5,7 @@ class UserOption < ActiveRecord::Base
   belongs_to :user
   belongs_to :poll_option
   has_one :user_option_history
+
+  
+
 end

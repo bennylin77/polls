@@ -26,6 +26,42 @@ class PollsController < ApplicationController
   def show
     @poll = Poll.find(params[:id])
 
+
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('string', '選項' )
+    data_table.new_column('number', '人')
+    
+    options=Array.new
+    @poll.poll_options.each do |o|
+      options << [o.title, o.user_options.size]
+    end      
+    data_table.add_rows(options)
+    option = { width: 600, height: 300}
+    @poll.chart1 = GoogleVisualr::Interactive::PieChart.new(data_table, option)
+
+
+    ######
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('string', 'Date' )
+    option_list = Array.new
+    @poll.poll_options.each do |o|  
+      data_table.new_column('number', o.title)
+      option_list << o.id
+    end
+    
+    PollOptionHistory.find(:all,
+                           :select=>'poll_option_id,count,created_at',
+                           :conditions=>{:poll_option_id=>option_list},
+                           :order=>'created_at asc'
+                            ).each do |p|
+
+    end  
+
+    options=Array.new
+    data_table.add_rows(options)
+    option = { width: 900, height: 300}
+    @poll.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
+
   end
   
   def vote
