@@ -8,7 +8,10 @@
 				<ul>
 					<li>
 						<%=link_to '新增主題', new_poll_path, class: "add_item fancybox open_ajax" %>
-					</li>			
+					</li>		
+					<li>
+						<%=link_to '投過的主題', '#', class: "enter_user_polls" %>
+					</li>							
 					<li>
 						<%= link_to "登出", facebook_path, :method => :delete, class: 'logout' %>
 					</li>														
@@ -20,7 +23,7 @@
 				
 				<ul id="before_login_ul">			
 					<li>
-						<%=link_to '新增投票', new_poll_path, class: "add_item fancybox open_ajax" %>
+						<%=link_to '新增主題', new_poll_path, class: "add_item fancybox open_ajax" %>
 					</li>	
 					<li>				
 						<%= link_to "facebook登入", new_facebook_path, class: 'login_fb' %>

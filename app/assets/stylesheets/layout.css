@@ -126,7 +126,7 @@ body > .header .header_right
 {
 	display:inline-block;
 	float: right;
-	width: 300px;
+	width: 450px;
 }
 
 body > .header .header_right ul
@@ -203,7 +203,25 @@ body > .header .header_right #on_login_div img{
 	/*background: #C3583D;*/
 	background: #757575;
 }
-
+.enter_user_polls {
+	/*background: #9C4631;*/
+	background:	#3D3D3D;
+	text-indent:0;
+	display:inline-block;
+	color:#FFFFFF;
+	font-family:Arial;
+	font-size:18px;
+	font-weight:bold;
+	font-style:normal;
+	height:42px;
+	line-height:42px;
+	width:120px;
+	text-decoration:none;
+	text-align:center;
+}.enter_user_polls:hover {
+	/*background: #C3583D;*/
+	background: #757575;
+}
 .logout {
 	/*background: #9C4631;*/
 	background:	#3D3D3D;
@@ -224,6 +242,8 @@ body > .header .header_right #on_login_div img{
 	background: #757575;
 }
 
+
+/*-----------------]:  body   :[---------------------*/
 .poll_button {
 	/*background: #9C4631;*/
 	background:	#878787;
@@ -245,9 +265,6 @@ body > .header .header_right #on_login_div img{
 	/*background: #C3583D;*/
 	background: #757575;
 }
-
-/*-----------------]:  body   :[---------------------*/
-
 
 
 
@@ -465,13 +482,7 @@ body > .header .header_right #on_login_div img{
 
 
 .button_b { 
-        background-color:#1b1f21;  
-        /*   
-        -moz-border-radius:7px;
-        -webkit-border-radius:7px;
-        border-radius:7px;  
-        */    
-        border:1px solid #7c7d79;     
+        background-color:#1b1f21;       
         display:inline-block;
         color:#ffffff;
         font-family:Arial;
@@ -486,15 +497,8 @@ body > .header .header_right #on_login_div img{
         background-color:#4F5559;
 }
 
-
 .button_small_b {     
-        background-color:#1b1f21;  
-        /*   
-        -moz-border-radius:7px;
-        -webkit-border-radius:7px;
-        border-radius:7px;  
-        */    
-        border:1px solid #7c7d79;     
+        background-color:#1b1f21;         
         display:inline-block;
         color:#ffffff;
         font-family:Arial;

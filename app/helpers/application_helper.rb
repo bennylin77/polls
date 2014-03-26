@@ -17,9 +17,9 @@ module ApplicationHelper
       else
         if 3600-(Time.now-user_option.updated_at)<=0
           return 2
-          else
-            return 3
-          end
+        else
+          return 3
+        end
       end
   end
   

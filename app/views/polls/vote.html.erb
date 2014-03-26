@@ -1,18 +1,40 @@
-<%=form_tag do%>
-	<div class="field">
-    <label><%=@poll.title%></label><br />
-    <%=@poll.description%>
+<%=form_tag({controller: 'polls', action: 'vote'}, id: 'form')  do%>
+<section class="table">	
+   	<div class="tr" style="padding-bottom: 10px; font-size: 22px; font-weight: bold"> 
+   		<%=@poll.title%>
+   	</div>
+   	<div class="tr" style="padding-bottom: 10px; font-size: 18px;">    	
+    	<%=@poll.description%>
   	</div>
   	<%@poll.poll_options.each do |o|%>
-	    <div class="field">
-	    	
-	    <label><%=o.title%></label>
-		<%=radio_button_tag 'option', o.id%>
-		
+	    <div class="tr" style="padding-bottom: 10px; font-size: 15px;">     	
+	    	<%=o.title%>	   
+	    	<%=radio_button_tag 'option', o.id%> 	
 	    </div>
     <%end%>
     <%=hidden_field_tag 'id', @poll.id%>
-  	<div class="actions">	
-	<%=submit_tag "送出"%>
+  	<div class="tr" style="padding-bottom: 10px; padding-left: 60px;"> 	
+		<%=submit_tag "送出", class: "button_small_b"%>
 	</div>
+</section>	
 <%end%>
+
+<script>
+
+$("#form").bind("submit", function () {
+    $.fancybox.showLoading(); // it was $.fancybox.showActivity(); for v1.3.4
+    $.ajax({
+        type: "POST",
+        cache: false,
+        url: "polls/vote", // make sure your path is correct
+        data: $(this).serializeArray(), // your were using $(form).serialize(), 
+        success: function (data) {
+            location.reload(); 
+        }
+    });
+    return false;
+}); // bind
+
+</script>
+
+
