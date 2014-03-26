@@ -1,11 +1,5 @@
 <div id="main_center">
 	<p id="notice"><%= notice %></p>
-
-	<div class="tr" style="" >		
-				<div id='chart1_<%=@poll.id%>'></div>
-				<%= render_chart(@poll.chart1, 'chart1_'+@poll.id.to_s) %>	
-	</div>
-	</br>
 	<div class="tr" style="" >		
 				<div id='chart2_<%=@poll.id%>'></div>
 				<%= render_chart(@poll.chart2, 'chart2_'+@poll.id.to_s) %>	
@@ -21,3 +15,4 @@
 	<%= link_to 'Edit', edit_poll_path(@poll) %> |
 	<%= link_to 'Back', polls_path %>
 </div > 
+<%=@aaa.to_s%>
