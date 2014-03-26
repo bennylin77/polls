@@ -40,15 +40,19 @@ class PollsController < ApplicationController
           if tmp != pp.t
             tmp = pp.t
             if flag==1  # skip first loop
-              options << row_list       
+              options << row_list   
+              row_list = Array.new    
             end
-            row_list << pp.t.to_s     #fist col is datetime
+            row_list << pp.t.to_s     #first col is datetime
             flag=1  
           end
           row_list << pp.count 
           tmp = pp.t
       end  
       options << row_list
+      #@ssss = options
+      #options1 = Array.new
+      #options1 << ["03/26 01:00",4,5,6]
       #@aaa = options
       data_table.add_rows(options)
       option = { width: 600, height: 300}
