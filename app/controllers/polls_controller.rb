@@ -4,7 +4,7 @@ class PollsController < ApplicationController
   before_filter :checkUser,  only: [:destroy]
   
   def index
-    @polls = Poll.paginate(:per_page => 5, :page => params[:page]).order('created_at DESC')
+    @polls = Poll.paginate(per_page: 5, page: params[:page], conditions: ["verified_c = true"]).order('created_at DESC')
     @polls.each do |p|
       data_table = GoogleVisualr::DataTable.new
       data_table.new_column('string', '選項' )
@@ -88,28 +88,40 @@ class PollsController < ApplicationController
         }       
       else
         if 3600-(Time.now-user_option.updated_at)<=0
-          user_option.user_option_history=UserOptionHistory.find_or_initialize_by_user_option_id(user_option.id)
-          user_option.user_option_history.poll_option=user_option.poll_option
-          user_option.user_option_history.save!
-          user_option.poll_option=PollOption.find(params[:option])
-          user_option.src_ip=request.remote_ip   
-          user_option.save!
-          flash[:notice] = {
-            :title   => "已成功投票!",
-            :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
-          }              
+          if !params[:option].blank?
+            user_option.user_option_history=UserOptionHistory.find_or_initialize_by_user_option_id(user_option.id)
+            user_option.user_option_history.poll_option=user_option.poll_option
+            user_option.user_option_history.save!
+            user_option.poll_option=PollOption.find(params[:option])
+            user_option.src_ip=request.remote_ip   
+            user_option.save!
+            flash[:notice] = {
+              :title   => "已成功投票!",
+              :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+            }
+          else
+            flash[:notice] = {
+                :title   => "投票 失敗",
+                :message => "您未選擇任何投票選項"          
+            }            
+          end                  
         else
           flash[:notice] = {
               :title   => "目前無法投票!",
               :message => "\""+@poll.title+"\" 已投過票, "+((3600-(Time.now-user_option.updated_at))/60).to_i.to_s+"分鐘後可再重新投票"          
           }    
         end      
-      end  
-      redirect_to root_url
+      end    
+      if request.xhr?
+        render :json => {success: "動作完成" }.to_json                 
+      else
+        redirect_to root_url
+      end    
+    else
+      if request.xhr?
+        render layout: false 
+      end     
     end
-    if request.xhr?
-      render layout: false 
-    end  
   end
   
   def new
@@ -117,10 +129,14 @@ class PollsController < ApplicationController
     @user=User.find(session[:user_id])
 
     if request.xhr?
-       if 3600-(Time.now-@user.polls.last.updated_at)<=0
+       if @user.polls.empty?
         render layout: false 
        else
-        render template: "polls/newLimit", layout: false 
+         if 3600-(Time.now-@user.polls.last.updated_at)<=0 
+          render layout: false
+         else  
+          render template: "polls/newLimit", layout: false 
+         end
        end  
     else
       redirect_to root_url   
@@ -135,13 +151,21 @@ class PollsController < ApplicationController
     user=User.find(session[:user_id])      
     @poll  = Poll.new(title: params[:poll][:title], description: params[:poll][:description], kind: GLOBAL_VAR["general"]) 
     @poll.user = user
-    params[:option].each do |key, value| 
-      unless(params[:option][key].blank?)
-        @poll.poll_options<<PollOption.new(title: params[:option][key])  
-      end
+    if !params[:option].blank?
+      params[:option].each do |key, value| 
+        unless(params[:option][key].blank?)
+          @poll.poll_options<<PollOption.new(title: params[:option][key])  
+        end
+      end    
+      @poll.save!
+      redirect_to root_url
+    else
+      flash[:notice] = {
+        :title   => "新增主題 失敗",
+        :message => "您未填寫任何投票選項"          
+      }       
+      redirect_to root_url
     end    
-    @poll.save!
-    redirect_to root_url
     
     rescue ActiveRecord::RecordInvalid     
       if !@poll.valid?             

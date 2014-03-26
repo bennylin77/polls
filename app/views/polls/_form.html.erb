@@ -28,7 +28,7 @@
 	  </div>
 	  <div class="tr" id="optionField">
 	  </div>
-	  <div class="tr">
+	  <div class="tr" style="padding-bottom: 15px;">
 		<div class="td">
 		<input type="button" onclick="addOption()" name="add" value="新增選項" class="button_small_b"/>
 		</div>
@@ -36,8 +36,8 @@
 		<input type="button" onclick="delOption()" name="add" value="刪除選項" class="button_small_b"/>
 		</div>
 	  </div>
-	  <div class="actions">
-	    <%= f.submit '新增投票' %>
+	  <div class="tr" style="padding-left: 85px;">
+	    <%= f.submit '新增投票', class: "button_b" %>
 	  </div>
   <section>	 
 <% end %>
