@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class Poll < ActiveRecord::Base
   attr_accessible :title, :description, :kind
-  attr_accessor  :chart
+  attr_accessor  :chart, :chart1, :chart2
   has_many :poll_options, dependent: :destroy 
   belongs_to :user
   

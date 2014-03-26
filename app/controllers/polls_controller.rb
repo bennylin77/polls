@@ -24,7 +24,41 @@ class PollsController < ApplicationController
   end
 
   def show
+    ######
     @poll = Poll.find(params[:id])
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('string', 'Date' )
+    option_list = Array.new
+    @poll.poll_options.order('id asc').each do |o|  
+      data_table.new_column('number', o.title)
+      option_list << o.id
+    end
+    option_cnt = @poll.poll_options.count
+    tmp = 0
+    flag= 0
+    options =  Array.new
+    row_list = Array.new
+    PollOptionHistory.find(:all,
+                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%m/%d %H:00") as t',
+                           :conditions=>{:poll_option_id=>option_list},
+                           :order=>'t asc,poll_option_id asc'
+                            ).each do |p|
+        if tmp != p.t
+          tmp = p.t
+          if flag==1  # skip first loop
+            options << row_list       
+          end
+          row_list << p.t.to_s     #fist col is datetime
+          flag=1  
+        end
+        row_list << p.count 
+        tmp = p.t
+    end  
+    options << row_list
+    @aaa = options
+    data_table.add_rows(options)
+    option = { width: 900, height: 300}
+    @poll.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
 
   end
   
