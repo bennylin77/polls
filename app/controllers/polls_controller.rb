@@ -65,7 +65,7 @@ class PollsController < ApplicationController
               options << row_list   
               row_list = Array.new    
             end
-            row_list << DateTime.parse(pp.t).since(1.month)#pp.t.to_s     #first col is datetime
+            row_list << DateTime.parse(pp.t).since(6.hour)#pp.t.to_s     #first col is datetime
             flag=1  
           end
           row_list << pp.count 

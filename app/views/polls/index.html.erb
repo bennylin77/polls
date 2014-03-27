@@ -1,11 +1,10 @@
-<%if !@polls.blank?%>
-	<% content_for :show_fb do %>
-	    <meta property="og:site_name" content="即時公民投票" />
-	    <meta property="og:url" content="<%=host%>/?page=<%=@polls.current_page%>" />
-	  	<meta property="og:title" content="即時公民投票: <%= @polls.first.title%>" />
-	  	<meta property="og:description" content="<%= @polls.first.description%>" />	
-	<%end%>
+<% content_for :show_fb do %>
+	<meta property="og:site_name" content="instant 即時公民投票" />
+	<meta property="og:url" content="<%=host%>" />
+	<meta property="og:title" content="instant 即時公民投票" />
+	<meta property="og:image" content="<%=host%><%=image_path('logo_250x250_t.png')%>" />
 <%end%>
+
 <div class="fb-like" data-href="<%=host%>" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
 <section class="table" style="width: 50%; margin: 0 auto">
 <% @polls.each do |poll| %>		

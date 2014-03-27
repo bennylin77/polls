@@ -1,7 +1,7 @@
 <%if !@poll.blank?%>
 	<% content_for :show_fb do %>
-	    <meta property="og:site_name" content="即時公民投票" />
-	  	<meta property="og:title" content="即時公民投票: <%= @poll.title%>" />
+	    <meta property="og:site_name" content="instant 即時公民投票" />
+	  	<meta property="og:title" content="instant 即時公民投票: <%= @poll.title%>" />
 	  	<meta property="og:image" content="<%=host%><%=image_path('logo_250x250_t.png')%>" />	  	
 	  	<meta property="og:description" content="<%= @poll.description%>" />	
 	<%end%>
