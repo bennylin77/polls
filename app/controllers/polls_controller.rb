@@ -22,7 +22,7 @@ class PollsController < ApplicationController
 
       ### trend ###
       data_table = GoogleVisualr::DataTable.new
-      data_table.new_column('string', 'Date' )
+      data_table.new_column('datetime', 'Date' )
       option_list = Array.new
       p.poll_options.order('id asc').each do |o|  
       data_table.new_column('number', o.title)
@@ -34,7 +34,7 @@ class PollsController < ApplicationController
       options =  Array.new
       row_list = Array.new
       PollOptionHistory.find(:all,
-                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%m/%d %H:00") as t',
+                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
                            :conditions=>{:poll_option_id=>option_list},
                            :order=>'t asc,poll_option_id asc'
                             ).each do |pp|
@@ -44,7 +44,7 @@ class PollsController < ApplicationController
               options << row_list   
               row_list = Array.new    
             end
-            row_list << pp.t.to_s     #first col is datetime
+            row_list << DateTime.parse(pp.t).since(1.month)#pp.t.to_s     #first col is datetime
             flag=1  
           end
           row_list << pp.count 
@@ -53,7 +53,8 @@ class PollsController < ApplicationController
       options << row_list
       #@ssss = options
       #options1 = Array.new
-      #options1 << ["03/26 01:00",4,5,6]
+      #options1 << [Time.now.ago(1.hour).to_datetime,4,5,6]
+      #options1 << [Time.now.to_datetime,5,7,10]
       #@aaa = options
       data_table.add_rows(options)
       option = { width: 600, height: 300, title: '投票趨勢'}
