@@ -148,7 +148,7 @@ class PollsController < ApplicationController
        if @user.polls.empty?
         render layout: false 
        else
-         if 3600*24-(Time.now-@user.polls.last.updated_at)>=0 
+         if 3600*24-(Time.now-@user.polls.last.updated_at)<=0 
           render layout: false
          else  
           render template: "polls/newLimit", layout: false 
