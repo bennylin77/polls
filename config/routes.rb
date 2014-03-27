@@ -3,6 +3,7 @@ Polls::Application.routes.draw do
   
   get   "user/index"
   get   "polls/vote"
+  get   "polls/fbComment"  
   post  "polls/vote"
   
   root :to => 'polls#index'

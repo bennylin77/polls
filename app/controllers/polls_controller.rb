@@ -2,24 +2,25 @@
 class PollsController < ApplicationController
   before_filter :checkLogin, only: [:new, :create, :vote]
   before_filter :checkUser,  only: [:destroy]
-  
+    
   def index
-    @polls = Poll.paginate(per_page: 1, page: params[:page], conditions: ["verified_c = true"]).order('created_at ASC')
-    user_counts = 0
+
+    @polls = Poll.paginate(per_page: 5, page: params[:page], conditions: ["verified_c = true"]).order('created_at DESC')
     @polls.each do |p|
       data_table = GoogleVisualr::DataTable.new
       data_table.new_column('string', '選項' )
       data_table.new_column('number', '人')
       
       options=Array.new
+      user_counts = 0
       p.poll_options.order('id ASC').each do |o| 
         options << [o.title, o.user_options.size]
         user_counts= user_counts+o.user_options.size
       end      
       data_table.add_rows(options)
-      option = { width: 600, height: 300,  title: '目前得票比例 ('+user_counts.to_s+'人)'}
+      option = { width: 600, height: 240,  title: '目前得票比例 ('+user_counts.to_s+'人)'}
       p.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)
-
+=begin
       ### trend ###
       data_table = GoogleVisualr::DataTable.new
       data_table.new_column('datetime', 'Date' )
@@ -59,12 +60,65 @@ class PollsController < ApplicationController
       data_table.add_rows(options)
       option = { width: 600, height: 300, title: '投票趨勢'}
       p.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
+=end      
     end  
+  
   end
 
   def show
-    @poll = Poll.find(params[:id])
-    @poll_option = PollOption.find(params[:poll_option_id])
+    @poll = Poll.where(id: params[:id], verified_c: true).first
+    if !@poll.blank?
+      user_counts = 0    
+      data_table = GoogleVisualr::DataTable.new
+      data_table.new_column('string', '選項' )
+      data_table.new_column('number', '人')
+      
+      options=Array.new
+      @poll.poll_options.order('id ASC').each do |o| 
+        options << [o.title, o.user_options.size]
+        user_counts= user_counts+o.user_options.size
+      end      
+      data_table.add_rows(options)
+      option = { width: 600, height: 300,  title: '目前得票比例 ('+user_counts.to_s+'人)'}
+      @poll.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)
+
+      ### trend ###
+      data_table = GoogleVisualr::DataTable.new
+      data_table.new_column('datetime', 'Date' )
+      option_list = Array.new
+      @poll.poll_options.order('id asc').each do |o|  
+        data_table.new_column('number', o.title)
+        option_list << o.id
+      end
+      option_cnt = @poll.poll_options.count
+      tmp = 0
+      flag= 0
+      options =  Array.new
+      row_list = Array.new
+      PollOptionHistory.find(:all,
+                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
+                           :conditions=>{:poll_option_id=>option_list},
+                           :order=>'t asc,poll_option_id asc'
+                            ).each do |pp|
+          if tmp != pp.t
+            tmp = pp.t
+            if flag==1  # skip first loop
+              options << row_list   
+              row_list = Array.new    
+            end
+            row_list << DateTime.parse(pp.t).since(1.month)#pp.t.to_s     #first col is datetime
+            flag=1  
+          end
+          row_list << pp.count 
+          tmp = pp.t
+      end  
+      options << row_list
+      data_table.add_rows(options)
+      option = { width: 600, height: 300, title: '投票趨勢'}
+      @poll.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
+    else
+      redirect_to root_url
+    end  
   end
   
   def vote
@@ -182,5 +236,9 @@ class PollsController < ApplicationController
     @poll.destroy
 
     redirect_to root_url
+  end
+  
+  def fbComment
+    @poll_option = PollOption.find(params[:poll_option_id])    
   end
 end
