@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>公民投票</title>
+  <title>即時公民投票</title>
+  <% if content_for? :show_fb %>
+    <%= yield :show_fb %>
+  <% end %>
   <meta property="fb:app_id" content="<%= Facebook.config[:client_id] %>">
 
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />

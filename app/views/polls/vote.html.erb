@@ -26,7 +26,7 @@ $("#form").bind("submit", function () {
     $.ajax({
         type: "POST",
         cache: false,
-        url: "polls/vote", // make sure your path is correct
+        url: "<%=host%>/polls/vote", // make sure your path is correct
         data: $(this).serializeArray(), // your were using $(form).serialize(), 
         success: function (data) {
             location.reload(); 

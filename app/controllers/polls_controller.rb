@@ -4,19 +4,20 @@ class PollsController < ApplicationController
   before_filter :checkUser,  only: [:destroy]
   
   def index
-    @polls = Poll.paginate(per_page: 1, page: params[:page], conditions: ["verified_c = true"]).order('created_at DESC')
+    @polls = Poll.paginate(per_page: 1, page: params[:page], conditions: ["verified_c = true"]).order('created_at ASC')
+    user_counts = 0
     @polls.each do |p|
       data_table = GoogleVisualr::DataTable.new
       data_table.new_column('string', '選項' )
       data_table.new_column('number', '人')
       
       options=Array.new
-      p.poll_options.each do |o|
-        
+      p.poll_options.order('id ASC').each do |o| 
         options << [o.title, o.user_options.size]
+        user_counts= user_counts+o.user_options.size
       end      
       data_table.add_rows(options)
-      option = { width: 600, height: 300}
+      option = { width: 600, height: 300,  title: '目前得票比例 ('+user_counts.to_s+'人)'}
       p.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)
 
       ### trend ###
@@ -55,19 +56,14 @@ class PollsController < ApplicationController
       #options1 << ["03/26 01:00",4,5,6]
       #@aaa = options
       data_table.add_rows(options)
-      option = { width: 600, height: 300}
+      option = { width: 600, height: 300, title: '投票趨勢'}
       p.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
-
-
-    end
-    
-    
+    end  
   end
 
   def show
-    ######
     @poll = Poll.find(params[:id])
-    
+    @poll_option = PollOption.find(params[:poll_option_id])
   end
   
   def vote
@@ -138,7 +134,7 @@ class PollsController < ApplicationController
        if @user.polls.empty?
         render layout: false 
        else
-         if 3600-(Time.now-@user.polls.last.updated_at)<=0 
+         if 3600*24-(Time.now-@user.polls.last.updated_at)<=0 
           render layout: false
          else  
           render template: "polls/newLimit", layout: false 

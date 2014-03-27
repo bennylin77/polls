@@ -30,6 +30,17 @@ module ApplicationHelper
     end
     @return
   end  
-  
+
+  def pollChoice(hash={})
+    @return=''
+    if session[:user_id]
+      hash[:poll].poll_options.each do |o|
+        if !o.user_options.where(user_id: session[:user_id]).blank?
+          @return=("您的選擇: "+o.title+" &#9745").html_safe
+        end
+      end
+    end  
+    @return
+  end   
   
 end

@@ -1,0 +1,5 @@
+<% content_for :show_fb do %>
+    <meta property="og:url" content="<%=request.original_url%>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="選擇  <%=@poll_option.title%> 的回應" />
+<%end%>

@@ -12,17 +12,19 @@
   <% end %>
   <section class="table">	
 	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
-	    <%= f.label '投票主題' %>
+	    <%= f.label '投票主題 (盡量針對此次學運事件)' %>
 	  </div>  
 	  <div class="tr" style="padding-bottom: 10px;"> 
 	    <%= f.text_field :title %>
 	  </div>  
+	  <!--
 	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
 	    <%= f.label '投票描述' %>
 	  </div>
 	  <div class="tr" style="padding-bottom: 10px;">  
 	    <%= f.text_field :description %>
-	  </div>  
+	  </div>
+	  -->  
 	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
 	  	<%= f.label "投票選項"  %><br /> 
 	  </div>
@@ -54,7 +56,7 @@
 					  option_index.toString()+
 					  "' name='option["+
 					  option_index.toString()+ 
-					  "]' type='text' placeholder='選項"+
+					  "]' size='30' type='text' placeholder='選項"+
 					  (option_index+1).toString()+
 					  "'/>"
 					 );	
