@@ -1,3 +1,44 @@
+<%if !userOption(poll: @poll).blank?%>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+  var d, h, m, s;
+  $('#clock_countdown').countdown(new Date( 
+  									<%=(userOption(poll: @poll).updated_at+60 * 60-60).utc.to_i*1000%>), function(event) {
+    var timeFormat = "%m<span style=\"font-size: 8px;\">:</span>%s"
+        $this = $(this);
+    switch(event.type) {
+      case "days":
+        d = event.value;
+        break;
+      case "hours":
+        h = event.value;
+        break;
+      case "minutes":
+        m = event.value;
+        break;
+      case "seconds":
+        s = event.value;
+        break;
+      case "finished":
+        $this.fadeTo('slow', 0.5);
+        break;
+    }
+    // Assemble time format
+    if(d > 0) {
+      timeFormat = timeFormat.replace(/\%d/, d);
+    } else {
+      timeFormat = timeFormat.replace(/\%d<span style=\"font-size: 8px;\">天<\/span>/, '');
+    }
+    timeFormat = timeFormat.replace(/\%h/, h);
+    timeFormat = timeFormat.replace(/\%m/, m);
+    timeFormat = timeFormat.replace(/\%s/, s);
+    // Display
+    $this.html(timeFormat);
+  });
+});
+</script>
+<%end%>
+
 <%if !@poll.blank?%>
 	<% content_for :show_fb do %>
 	    <meta property="og:site_name" content="instant 即時公民投票" />
@@ -49,7 +90,9 @@
 					<% if userOptionBlank(id: @poll.id)==2 %>	
 						<%= link_to '重新投票', {controller: 'polls', action: 'vote', id: @poll.id}, class:"poll_button fancybox open_ajax" %>		
 					<% end %>
-					<% if userOptionBlank(id: @poll.id)==3%>	
+					<% if userOptionBlank(id: @poll.id)==3%>
+						<div style="font-family: Microsoft JhengHei; margin-top: 10px; margin-left: 13px;"><span id="clock_countdown"></span>後</div>
+						<div style="font-family: Microsoft JhengHei;">可重新投票</div>	
 					<% end %>
 				</div>
 				<% if @poll.user.id==session[:user_id]%>	
@@ -67,7 +110,7 @@
 			<div style="width:<%=(@poll.poll_options.size)*320%>px; margin: 0 auto;">
 			<%@poll.poll_options.each do |o|%>
 			<div class="td" style="margin-left: 30px;" >
-				<div class="tr" style="margin-bottom: 5px; font-size: 15px; font-family: Microsoft JhengHei; font-weight: bold;">
+				<div class="tr" style="margin-bottom: 5px; font-size: 15px; height:40px; font-family: Microsoft JhengHei; font-weight: bold;">
 					選擇 '<%= o.title%>' 的回應
 				</div>	
 				<div class="tr" style="width: 320px;" >

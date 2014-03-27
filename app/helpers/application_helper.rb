@@ -23,6 +23,15 @@ module ApplicationHelper
       end
   end
   
+  def userOption(hash={})
+    hash[:poll].poll_options.each do |o|
+      if !UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first.blank?
+        @user_option=UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first  
+      end
+    end    
+    @user_option
+  end
+  
   def pollCount(hash={})
     @return=0
     hash[:poll].poll_options.each do |o|
@@ -41,6 +50,10 @@ module ApplicationHelper
       end
     end  
     @return
-  end   
+  end  
+  
+  def dayAdd(date=nil ,day=nil)
+     date+day*(60 * 60 ) 
+  end  
   
 end
