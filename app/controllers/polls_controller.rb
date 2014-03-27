@@ -5,7 +5,7 @@ class PollsController < ApplicationController
     
   def index
 
-    @polls = Poll.paginate(per_page: 5, page: params[:page], conditions: ["verified_c = true"]).order('created_at DESC')
+    @polls = Poll.paginate(per_page: 15, page: params[:page], conditions: ["verified_c = true"]).order('created_at DESC')
     @polls.each do |p|
       data_table = GoogleVisualr::DataTable.new
       data_table.new_column('string', '選項' )

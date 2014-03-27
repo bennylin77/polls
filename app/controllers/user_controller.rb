@@ -9,7 +9,7 @@ class UserController < ApplicationController
         @polls<<o.poll_option.poll
       end  
     end  
-    @polls=@polls.sort{|a,b| a.id <=> b.id }.paginate(per_page: 1, page: params[:page])
+    @polls=@polls.sort{|a,b| a.id <=> b.id }.paginate(per_page: 15, page: params[:page])
   
     @polls.each do |p|
       data_table = GoogleVisualr::DataTable.new
