@@ -15,7 +15,7 @@
 	    <%= f.label '投票主題 (盡量針對此次學運事件)' %>
 	  </div>  
 	  <div class="tr" style="padding-bottom: 10px;"> 
-	    <%= f.text_field :title %>
+	    <%= f.text_field :title, size: 50%>
 	  </div>  
 	  <!--
 	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
@@ -56,7 +56,7 @@
 					  option_index.toString()+
 					  "' name='option["+
 					  option_index.toString()+ 
-					  "]' size='30' type='text' placeholder='選項"+
+					  "]' size='50' type='text' placeholder='選項"+
 					  (option_index+1).toString()+
 					  "'/>"
 					 );	

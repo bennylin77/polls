@@ -19,48 +19,7 @@ class PollsController < ApplicationController
       end      
       data_table.add_rows(options)
       option = { width: 600, height: 240,  title: '目前得票比例 ('+user_counts.to_s+'人)'}
-      p.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)
-=begin
-      ### trend ###
-      data_table = GoogleVisualr::DataTable.new
-      data_table.new_column('datetime', 'Date' )
-      option_list = Array.new
-      p.poll_options.order('id asc').each do |o|  
-      data_table.new_column('number', o.title)
-        option_list << o.id
-      end
-      option_cnt = p.poll_options.count
-      tmp = 0
-      flag= 0
-      options =  Array.new
-      row_list = Array.new
-      PollOptionHistory.find(:all,
-                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
-                           :conditions=>{:poll_option_id=>option_list},
-                           :order=>'t asc,poll_option_id asc'
-                            ).each do |pp|
-          if tmp != pp.t
-            tmp = pp.t
-            if flag==1  # skip first loop
-              options << row_list   
-              row_list = Array.new    
-            end
-            row_list << DateTime.parse(pp.t).since(1.month)#pp.t.to_s     #first col is datetime
-            flag=1  
-          end
-          row_list << pp.count 
-          tmp = pp.t
-      end  
-      options << row_list
-      #@ssss = options
-      #options1 = Array.new
-      #options1 << [Time.now.ago(1.hour).to_datetime,4,5,6]
-      #options1 << [Time.now.to_datetime,5,7,10]
-      #@aaa = options
-      data_table.add_rows(options)
-      option = { width: 600, height: 300, title: '投票趨勢'}
-      p.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
-=end      
+      p.chart = GoogleVisualr::Interactive::PieChart.new(data_table, option)    
     end  
   
   end
@@ -115,7 +74,7 @@ class PollsController < ApplicationController
       options << row_list
       data_table.add_rows(options)
       option = { width: 600, height: 300, title: '投票趨勢'}
-      @poll.chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
+      @chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
     else
       redirect_to root_url
     end  
@@ -189,7 +148,7 @@ class PollsController < ApplicationController
        if @user.polls.empty?
         render layout: false 
        else
-         if 3600*24-(Time.now-@user.polls.last.updated_at)<=0 
+         if 3600*24-(Time.now-@user.polls.last.updated_at)>=0 
           render layout: false
          else  
           render template: "polls/newLimit", layout: false 
