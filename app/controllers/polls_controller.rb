@@ -73,7 +73,7 @@ class PollsController < ApplicationController
       end  
       options << row_list
       data_table.add_rows(options)
-      option = { width: 600, height: 300, title: '投票趨勢'}
+      option = { width: 600, height: 300, title: '投票趨勢', hAxis: {format: 'MM/dd HH:mm'}}
       @chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
     else
       redirect_to root_url
