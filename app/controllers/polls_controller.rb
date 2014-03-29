@@ -54,20 +54,29 @@ class PollsController < ApplicationController
       flag= 0
       options =  Array.new
       row_list = Array.new
+      inner_cnt = 0
       PollOptionHistory.find(:all,
                            :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
                            :conditions=>{:poll_option_id=>option_list},
                            :order=>'t asc,poll_option_id asc'
                             ).each do |pp|
-          if tmp != pp.t
-            tmp = pp.t
+        if tmp != pp.t
+          tmp = pp.t
             if flag==1  # skip first loop
+              if inner_cnt < option_cnt
+                while inner_cnt < option_cnt do
+                  row_list << 0
+                  inner_cnt = inner_cnt + 1
+                end
+              end
               options << row_list   
               row_list = Array.new    
+              inner_cnt = 0
             end
             row_list << DateTime.parse(pp.t).since(8.hour)#pp.t.to_s     #first col is datetime
             flag=1  
           end
+          inner_cnt = inner_cnt + 1
           row_list << pp.count 
           tmp = pp.t
       end  
@@ -77,7 +86,7 @@ class PollsController < ApplicationController
       @chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
     else
       redirect_to root_url
-    end  
+    end   
   end
   
   def vote
