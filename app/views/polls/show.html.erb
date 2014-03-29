@@ -3,7 +3,7 @@
 $(function() {
   var d, h, m, s;
   $('#clock_countdown').countdown(new Date( 
-  									<%=(userOption(poll: @poll).updated_at+60 * 60-60).utc.to_i*1000%>), function(event) {
+  									<%=(userOption(poll: @poll).updated_at+60 * 60-140).utc.to_i*1000%>), function(event) {
     var timeFormat = "%m<span style=\"font-size: 8px;\">:</span>%s"
         $this = $(this);
     switch(event.type) {

@@ -90,31 +90,58 @@ class PollsController < ApplicationController
         end
       end
             
-      if user_option.blank?   
-        user=User.find(session[:user_id])
-        user_option=UserOption.new
-        user_option.poll_option=PollOption.find(params[:option])
-        user_option.user=user
-        user_option.src_ip=request.remote_ip
-        user_option.save!
-        
-        flash[:notice] = {
-            :title   => "已成功投票!",
-            :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
-        }       
+      if user_option.blank?        
+        if !params[:option].blank?
+          user=User.find(session[:user_id])
+          user_option=UserOption.new
+          if params[:option]!='0'
+            user_option.poll_option=PollOption.find(params[:option])
+            user_option.user=user
+            user_option.src_ip=request.remote_ip
+            user_option.save!
+            flash[:notice] = {
+              :title   => "已成功投票!",
+              :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+            }                
+          else
+            user_option.poll_option=PollOption.new(title: params[:new_option], user_id: session[:user_id], poll_id: @poll.id)
+            user_option.user=user
+            user_option.src_ip=request.remote_ip
+            user_option.save!
+            flash[:notice] = {
+              :title   => "已成功投票!",
+              :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+            }                 
+          end 
+        else
+          flash[:notice] = {
+            :title   => "投票 失敗",
+            :message => "您未選擇任何投票選項"          
+          }            
+        end               
       else
         if 3600-(Time.now-user_option.updated_at)<=0
           if !params[:option].blank?
             user_option.user_option_history=UserOptionHistory.find_or_initialize_by_user_option_id(user_option.id)
             user_option.user_option_history.poll_option=user_option.poll_option
             user_option.user_option_history.save!
-            user_option.poll_option=PollOption.find(params[:option])
-            user_option.src_ip=request.remote_ip   
-            user_option.save!
-            flash[:notice] = {
-              :title   => "已成功投票!",
-              :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
-            }
+            if params[:option]!='0'
+              user_option.poll_option=PollOption.find(params[:option])
+              user_option.src_ip=request.remote_ip   
+              user_option.save!
+              flash[:notice] = {
+                :title   => "已成功投票!",
+                :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+              }             
+            else
+              user_option.poll_option=PollOption.new(title: params[:new_option], user_id: session[:user_id], poll_id: @poll.id)
+              user_option.src_ip=request.remote_ip
+              user_option.save!
+              flash[:notice] = {
+                :title   => "已成功投票!",
+                :message => "\""+@poll.title+"\" 主題中您選擇: "+ user_option.poll_option.title         
+              }                 
+            end  
           else
             flash[:notice] = {
                 :title   => "投票 失敗",
@@ -170,7 +197,7 @@ class PollsController < ApplicationController
     if !params[:option].blank?
       params[:option].each do |key, value| 
         unless(params[:option][key].blank?)
-          @poll.poll_options<<PollOption.new(title: params[:option][key])  
+          @poll.poll_options<<PollOption.new(title: params[:option][key], user_id: session[:user_id])  
         end
       end    
       @poll.save!
