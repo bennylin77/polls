@@ -1,0 +1,6 @@
+document.getElementById("<%=@button_id%>").innerHTML="<%=@div_content%>";//change the button content
+<%if @type=="main"%>
+	document.getElementById("<%=@span_id%>").innerHTML="<%=j LikeOption.where(:comment_id=>@id.to_i).count.to_s%>";
+<%else%>
+	document.getElementById("<%=@span_id%>").innerHTML="<%=j LikeOption.where(:sub_comment_id=>@id.to_i).count.to_s%>";
+<%end%>

@@ -1,0 +1,86 @@
+<script>
+<%unless session[:user_id].blank?%>
+function show_reply(id){
+	
+	var spantd="<%=j reply_usr_td_main_content.html_safe%>";
+
+	var tr = "<tr id=\"subreply_"+id+"\" class=\"span11 offset1\">" ;
+	var comment_form="<%= escape_javascript(render :partial=>'comment_form', :locals=>{:_type=>"sub"}) %>";
+	comment_form=comment_form.replace("id_for_replace",id);
+	comment_form=comment_form.replace("com_textarea","com_textarea_"+id);
+	comment_form=comment_form.replace("sub_submit","sub_submit_"+id);
+	$("#last_"+id).after(tr+spantd+comment_form+"</td></tr>");
+	var sub_id="sub_submit_"+id;
+	$("#"+sub_id).click(function(){return reg_submit_click(sub_id,id);});
+	
+}
+
+
+function _like(type,id,but){
+
+	var flag = 0 ;
+	if(but.innerHTML=="收回讚")
+		flag = 1;
+	
+	$.ajax({
+			type: "GET",
+  			url: "/polls/like_control",
+  			data: {_type: type,//main or sub
+				   _id: id, 
+				   _flag: flag,//like or unlike
+  				},
+  			error: function(){
+				alert("Internal server error..");
+  			},
+		});
+}
+function reg_submit_click(button_id,id){
+	//alert("!!!!!!!");
+	if(id==0){
+		if($("#com_textarea").val()=="") 
+			return false;
+	}
+	else{
+		if($("#com_textarea_"+id).val()=="") 
+			return false;
+	}
+	$("#"+button_id).after('<%=image_tag 'loading.gif', :id=>'loader'%>');
+	$("#"+button_id).hide();
+}
+
+$("#main_submit").click(function(){return reg_submit_click("main_submit",0);});
+
+
+
+<%end%>
+
+
+</script>
+<legend align="center">Comments</legend>
+
+<table id="comments" class="table table-comments">
+<tr class="<%=reply_table_whole_span%>">
+<td class="<%=reply_table_content_span%>">
+
+<%unless session[:user_id].blank?%>
+<%= render :partial=>'comment_form', :locals=>{:_type=>"main"}%>
+<div id="preview" style="display:none"></div>
+<%end%>
+</td>
+</tr>
+
+<%@comment.each do |c|%>
+	<%userinfo = user_fb_info(c.user_id)%>
+	<%= render :partial=>'comment_cell', :locals=>{:_type=>"main", :_comment=>c, :_userinfo=>userinfo}%>
+	
+	<%count = 1%>
+	<%c.sub_comments.each do |sub_c|%>
+		<%sub_info = user_fb_info(sub_c.user_id)%>
+		<%= render :partial=>'comment_cell', :locals=>{:_type=>"sub", :_comment=>sub_c, :_userinfo=>sub_info, :_main_comment=>c, :_count=>count}%>			
+		<%count=count+1%>			
+	<%end%>
+
+
+<%end%>
+
+</table>

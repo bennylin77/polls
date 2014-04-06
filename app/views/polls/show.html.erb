@@ -3,7 +3,7 @@
 $(function() {
   var d, h, m, s;
   $('#clock_countdown').countdown(new Date( 
-  									<%=(userOption(poll: @poll).updated_at+60 * 60-145).utc.to_i*1000%>), function(event) {
+  									<%=(userOption(poll: @poll).updated_at+60 * 60-140).utc.to_i*1000%>), function(event) {
     var timeFormat = "%m<span style=\"font-size: 8px;\">:</span>%s"
         $this = $(this);
     switch(event.type) {
@@ -36,8 +36,27 @@ $(function() {
     $this.html(timeFormat);
   });
 });
+
 </script>
+
 <%end%>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+	$.ajax({ 
+		type: "GET",
+		url: "get_user_info",
+		data: {poll_id:<%=@poll.id.to_s%>},
+        success: function(){},
+        error: function(){
+        	alert("Inernal server error..");
+        	$("#info").html("ERROR");
+        	}
+		});
+});
+
+
+</script>
 
 <%if !@poll.blank?%>
 	<% content_for :show_fb do %>
@@ -106,19 +125,11 @@ $(function() {
 				<%=render_chart(@chart2, 'chart_'+(@poll.id+1).to_s) %>
 			</div>				
 		</div>	
-		<div class="tr">
-			<div style="width:<%=(@poll.poll_options.size)*320%>px; margin: 0 auto;">
-			<%@poll.poll_options.each do |o|%>
-			<div class="td" style="margin-left: 30px;" >
-				<div class="tr" style="margin-bottom: 5px; font-size: 15px; height:40px; font-family: Microsoft JhengHei; font-weight: bold;">
-					選擇 '<%= o.title%>' 的回應
-				</div>	
-				<div class="tr" style="width: 320px;" >
-					<div class="fb-comments" data-href="<%=host%>/polls/fbComment?poll_option_id=<%=o.id%>" data-numposts="5" data-colorscheme="light" data-width="310px"></div>
-				</div>	
-			</div>	
-			<%end%>	
-			</div>	   	
-		</div>								
+
+	<div id="info" class="container-fluid " align="center">
+	
+		<%=image_tag("loading.gif")%>
+	
 	</div>
-</section> 
+	
+</section>
