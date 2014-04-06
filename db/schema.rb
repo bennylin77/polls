@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140329082218) do
+ActiveRecord::Schema.define(:version => 20140404040014) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "poll_id"
+    t.integer  "poll_option_id"
+    t.text     "content"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "facebooks", :force => true do |t|
     t.string   "identifier"
@@ -20,6 +29,14 @@ ActiveRecord::Schema.define(:version => 20140329082218) do
     t.integer  "user_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "like_options", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "comment_id"
+    t.integer  "sub_comment_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "poll_option_histories", :force => true do |t|
@@ -48,6 +65,41 @@ ActiveRecord::Schema.define(:version => 20140329082218) do
     t.datetime "updated_at",                    :null => false
   end
 
+  create_table "reference_accepts", :force => true do |t|
+    t.integer  "reference_id"
+    t.integer  "user_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "reference_clicks", :force => true do |t|
+    t.integer  "reference_id"
+    t.integer  "user_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "references", :force => true do |t|
+    t.integer  "poll_id"
+    t.integer  "user_id"
+    t.integer  "article_id"
+    t.integer  "poll_option_id"
+    t.integer  "kind"
+    t.text     "link"
+    t.boolean  "verified_c",     :default => true, :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  create_table "sub_comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "comment_id"
+    t.integer  "poll_option_id"
+    t.text     "content"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "user_option_histories", :force => true do |t|
     t.integer  "user_option_id"
     t.integer  "poll_option_id"
@@ -72,6 +124,7 @@ ActiveRecord::Schema.define(:version => 20140329082218) do
     t.datetime "icon_updated_at"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "birthday"
   end
 
 end

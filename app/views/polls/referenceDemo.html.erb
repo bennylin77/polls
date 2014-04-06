@@ -1,0 +1,218 @@
+<div id='reference'>
+	<div id='reference_post'>
+		<textarea class='ref_content' placeholder="參考連結..."></textarea><br>
+		<input type='button' value='張貼' class='ref_post' href='#'>
+		<div class="urlive-container"> 
+		    <span class="ref_post_loading">Loading...</span>
+		</div>
+	</div>
+	<div id='reference_main'>
+	</div>		
+</div>	
+
+
+<script>
+$(document).ready(function()
+{	
+	refresh();
+	$( ".ref_post" ).bind( "click", function() {
+		$('.urlive-container').urlive("remove", 400);		
+		var request =$.ajax({
+			url: "/polls/refPost",
+			type: "POST",
+			data: { link: $('.ref_content').val(), poll_id: 22}
+		});
+		request.done(function( data ) {
+			createContainer(data);						
+		});
+		request.fail(function( jqXHR, textStatus ) {
+			alert( "Request failed: " + textStatus );
+		});	
+	});
+		
+	$('.ref_content').on('input propertychange', function () {
+	    $('.ref_content').urlive({
+	    	container: '.urlive-container',
+	        callbacks: {
+	            onStart: function () {
+	                $('.ref_post_loading').show();
+	                $('.urlive-container').urlive('remove');
+	            },
+	            onSuccess: function (data) {
+	                $('.ref_post_loading').hide();
+	            },
+	            noData: function () {
+	                $('.ref_post_loading').hide();
+	            }
+	        }
+	    });
+	});	
+	
+	
+	function refresh() 
+	{
+		$('#reference_main').empty();		
+		var request =$.ajax({
+			url: "/polls/reference",
+			type: "GET",
+			data: { poll_id: 22}
+		});
+		request.done(function( data ) {	
+			jQuery.each(data, function(i, val)
+			{
+				createContainer(val);											  
+			});			
+		});
+		request.fail(function( jqXHR, textStatus ) {
+			alert( "Request failed: " + textStatus );
+		});
+	};
+	
+	function createContainer(val) 
+	{
+		var newSection = $(document.createElement('section')).attr({ id: 'section_'+val.id, class: 'ref_main_section'});				
+		newSection.html('<div style="font-size: 15px;">'+val.id+'</div>'+val.link.replace(/\n/g, "<br />"));	
+		var outerDiv= $(document.createElement('div')).attr({ id: 'urlive-container_outer_'+val.id, class: 'ref_main_urlive_outer'});	
+		var newDiv = $(document.createElement('div')).attr({ id: 'urlive-container_'+val.id, class: 'ref_main_urlive-container'});
+		var newSpan = $(document.createElement('span')).attr({ id: 'ref_loading_'+val.id});
+		var newDivOp = $(document.createElement('div')).attr({ id: 'urlive-container_op_'+val.id, class: 'ref_main_urlive-container-op'});
+		var newDivOpLeft = $(document.createElement('div')).attr({ id: 'urlive-container_op_left_'+val.id, class: 'ref_main_urlive-container-op-left'});
+		var newDivOpRight = $(document.createElement('div')).attr({ id: 'urlive-container_op_right_'+val.id, class: 'ref_main_urlive-container-op-right'});
+		var newSpanAccCount = $(document.createElement('span')).attr({ id: 'urlive-container_acc_count_'+val.id, class: 'ref_main_urlive-container-acc-count'});
+		var newSpanCliCount = $(document.createElement('span')).attr({ id: 'urlive-container_cli_count_'+val.id, class: 'ref_main_urlive-container-cli-count'});				
+		newSpanAccCount.append("<img height='18px' width='18px' alt='接受' src='<%=asset_path('accept.png')%>'/> <span id='acc_"+val.id+"'>"+val.accept+"</span>");
+		newSpanCliCount.append("<img height='16px' width='20px' alt='點閱' src='<%=asset_path('eye.png')%>'/> <span id='click_"+val.id+"'>"+val.click+"</span>");
+		//dele
+		if(val.dele_c)
+		{
+			var newSpanDel = $(document.createElement('span')).attr({ id: 'urlive-container_del_'+val.id, class: 'ref_main_urlive-container-del'});
+			newSpanDel.append(" | 刪除");
+			$( newSpanDel ).bind( "click", function() {		
+			var request =$.ajax({
+				url: "/polls/refDelete",
+				type: "GET",
+				data: { reference_id: val.id}
+			});
+			request.done(function( data ) {
+				$('#section_'+data.reference_id).remove();
+					
+			});
+			request.fail(function( jqXHR, textStatus ) {	
+			});
+				
+		});			
+			
+			
+			
+		}
+		//accept
+		var newSpanAcc = $(document.createElement('span')).attr({ id: 'urlive-container_acc_'+val.id, class: 'ref_main_urlive-container-acc'});
+		if(val.accept_c)
+		{	
+			newSpanAcc.append("接受");
+			var accept_c=true;
+		}
+		else
+		{
+			newSpanAcc.append("取消接受");
+			var accept_c=false;
+		}
+		var accept_bind_c=accept_c	
+		$( newSpanAcc ).bind( "click", function() {		
+			var request =$.ajax({
+				url: "/polls/refAccept",
+				type: "GET",
+				data: { reference_id: val.id, poll_id: 22, accept: accept_bind_c}
+			});
+			request.done(function( data ) {
+				$("#acc_"+data.reference_id).html(data.count);
+				if(data.accept_c)
+				{
+					accept_bind_c=false;
+					$("#urlive-container_acc_"+data.reference_id).html('取消接受');
+				}
+				else
+				{
+					accept_bind_c=true;
+					$("#urlive-container_acc_"+data.reference_id).html('接受');	
+				}
+			});
+			request.fail(function( jqXHR, textStatus ) {	
+			});
+				
+		});	
+		//click
+		$( newDiv ).bind( "click", function() {		
+			var request =$.ajax({
+				url: "/polls/refClick",
+				type: "GET",
+				data: { reference_id: val.id, poll_id: 22}
+			});
+			request.done(function( data ) {
+				$("#click_"+data.reference_id).html(data.count);
+			});
+			request.fail(function( jqXHR, textStatus ) {	
+			});
+				
+		});					
+		newSpanAccCount.appendTo(newDivOpLeft);		
+		newSpanCliCount.appendTo(newDivOpLeft);		
+		newSpanAcc.appendTo(newDivOpRight);	
+		if(val.dele_c)
+			newSpanDel.appendTo(newDivOpRight);									
+		newDivOpLeft.appendTo(newDivOp);	
+		newDivOpRight.appendTo(newDivOp);						
+		newDiv.appendTo(outerDiv);
+		newDivOp.appendTo(outerDiv);
+		outerDiv.appendTo(newSection);					
+		newSection.prependTo("#reference_main");					
+		$(newSection).urlive({
+			container: '#urlive-container_'+val.id,
+			callbacks:{
+				onStart: function(){
+					$( '#ref_loading_'+val.id).show();
+				},
+				onLoadEnd: function(){
+				    $( '#ref_loading_'+val.id).hide();
+				}
+			}
+		});		
+	};	
+});	
+
+</script>
+<style>
+* {
+    font-family:'Segoe UI', 'Open Sans', sans-serif;
+}
+textarea {
+    width:450px;
+    height:70px;
+}
+.urlive-container {
+    margin-top:5px;
+    width:450px;
+}
+.urlive-url{
+	display: none;
+}
+.ref_post_loading {
+    display:none;
+}
+.ref_main_urlive-container{
+    margin-top:5px;
+    width:450px;	
+}
+.ref_main_section{
+	word-wrap:break-word;
+	border-radius: 4px;
+	padding-top: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background: #FFFFFF;
+	width:450px;
+	font-weight: normal;
+	font-family: Microsoft JhengHei;
+	margin-top: 20px;
+}
+</style>

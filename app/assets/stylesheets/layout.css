@@ -505,6 +505,7 @@ body > .header .header_right #on_login_div img{
         background-color:#4F5559;
 }
 /*-----------------]: show ajax :[---------------------*/
+/*
 .show_ajax
 {
   margin:10px auto;
@@ -527,4 +528,42 @@ body > .header .header_right #on_login_div img{
 {
 	background:	#4F6AA2;
 	border:2px solid #4F6AA2;
+}
+*/
+/*-----------------]: reference :[---------------------*/
+
+.ref_main_urlive-container-acc-count{
+}
+.ref_main_urlive-container-cli-count{
+	margin-left:10px;
+}
+.ref_main_urlive-container-op{
+	width:450px;
+	margin-top:5px;
+}
+
+.ref_main_urlive-container-op-left{
+	display: inline;
+	
+}
+.ref_main_urlive-container-op-right{
+	display: inline;
+	float:right;
+	margin-right: 5px;	
+}
+.ref_main_urlive-container-acc{
+	cursor: pointer;
+	font-weight: bold;
+	font-family: Microsoft JhengHei;	
+}
+.ref_main_urlive-container-acc:hover{
+	color:	#7E7E7E;
+}
+.ref_main_urlive-container-del{
+	cursor: pointer;
+	font-weight: bold;
+	font-family: Microsoft JhengHei;	
+}
+.ref_main_urlive-container-del:hover{
+	color:	#7E7E7E;
 }

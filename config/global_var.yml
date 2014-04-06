@@ -1,6 +1,9 @@
 defaults: &defaults
 
-  general: 0         
+  general: 0
+  
+  link: 0
+  article: 1         
 
 development:
   <<: *defaults

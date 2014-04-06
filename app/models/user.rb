@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :icon
   has_one  :facebook
+  has_many :references
+  has_many :reference_clicks
+  has_many :reference_accepts  
   has_many :polls
   has_many :user_options
   has_many :poll_options  
