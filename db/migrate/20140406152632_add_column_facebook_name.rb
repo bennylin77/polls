@@ -14,6 +14,6 @@ class AddColumnFacebookName < ActiveRecord::Migration
   end
 
   def down
-  	remove_column :facebook, :name
+  	remove_column :facebooks, :name
   end
 end
