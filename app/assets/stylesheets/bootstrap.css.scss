@@ -83,7 +83,7 @@ sup {
 sub {
   bottom: -0.25em;
 }
-img {
+.img {
   /* Responsive images (ensure images don't scale beyond their parents) */
 
   max-width: 100%;
@@ -99,6 +99,8 @@ img {
   border: 0;
   -ms-interpolation-mode: bicubic;
 }
+
+
 #map_canvas img,
 .google-maps img {
   max-width: none;
@@ -217,11 +219,11 @@ a {
   color: #0088cc;
   text-decoration: none;
 }
-a:hover,
+/*a:hover,
 a:focus {
   color: #005580;
   text-decoration: underline;
-}
+}*/
 .img-rounded {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;

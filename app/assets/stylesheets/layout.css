@@ -140,6 +140,7 @@ body > .header .header_right
 	display:inline-block;
 	float: right;
 	width: 375px;
+	margin-top: 12px;
 }
 
 body > .header .header_right ul
@@ -434,21 +435,21 @@ body > .header .header_right #on_login_div img{
 
 /*-----------------]: table :[---------------------*/
 
-.table{   	
+._table{   	
     border-collapse: collapse;
     border-spacing: 0;
     display: table;	      
 }
-.table  a:hover{   	
+._table  a:hover{   	
 	text-decoration: none;		      
 }
-.tr{   	
+._tr{   	
     display: table-row, inline-block; 
 } 
-.td{   
+._td{   
     display: table-cell;        
 }
-.td:hover {
+._td:hover {
     display: table-cell;        
 }
 /*-----------------]: post :[---------------------*/

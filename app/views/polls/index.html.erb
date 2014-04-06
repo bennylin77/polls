@@ -7,38 +7,38 @@
 <%end%>
 
 <div class="fb-like" data-href="<%=root_url%>" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-<section class="table" style="width: 50%; margin: 0 auto">
+<section class="_table" style="width: 50%; margin: 0 auto">
 <% @polls.each do |poll| %>		
-	<div class="tr" style="margin-top:15px;
+	<div class="_tr" style="margin-top:15px;
 						   background:#FFFFFF;
 						   border-radius: 10px 10px 10px 10px;
 						   -moz-border-radius: 10px 10px 10px 10px;
 						   -webkit-border-radius: 10px 10px 10px 10px;
 						   border: 0px solid #000000;">					   
-		<div class="tr" style="padding-top: 10px; width:100%">
+		<div class="_tr" style="padding-top: 10px; width:100%">
 			<div style="color: #FF4719; display: inline-block; float: right; margin-right: 130px; font-size: 20px; font-family: Microsoft JhengHei">
 				<%= pollCount(poll: poll) %>人投過			
 			</div>	
 			<div style="width: 600px; display: inline-block; margin-left: 50px;">
-				<div class="tr" style="padding-bottom:5px;">
-					<div class="td">		
+				<div class="_tr" style="padding-bottom:5px;">
+					<div class="_td">		
 						<%=link_to image_tag(User.find(poll.user.id).icon.url(:thumb), size: '42x42'), "https://www.facebook.com/"+poll.user.facebook.identifier%>		
 					</div>	
-					<a class="td poll_title_index" href="/polls/<%= poll.id%>" style="color: black; text-decoration: none;" onMouseOut="this.style.color='black'" onMouseOver="this.style.color='#7E7E7E'">
-					<div class="td" style="padding-left:20px; line-height: 26px; width: 500px; font-size: 26px; font-family: Microsoft JhengHei">		
+					<a class="_td poll_title_index" href="/polls/<%= poll.id%>" style="color: black; text-decoration: none;" onMouseOut="this.style.color='black'" onMouseOver="this.style.color='#7E7E7E'">
+					<div class="_td text-center" style="padding-left:20px; font-size: 24px;line-height: 26px; width: 500px; font-family: Microsoft JhengHei;">		
 						<%= poll.title%>
 					</div>	
-					<div class="td" style="padding-left:10px; font-size: 10px; width: 110px; font-family: Microsoft JhengHei">		
+					<div class="_td" style="padding-left:10px; font-size: 10px; width: 110px; font-family: Microsoft JhengHei">		
 					<%= time_ago_in_words(poll.created_at)%>之前
 					</div>
 					</a>
 				</div>	
-				<div class="tr" style="font-family: Microsoft JhengHei; font-weight: bold">		
+				<div class="_tr" style="font-family: Microsoft JhengHei; font-weight: bold">		
 					<%= pollChoice poll: poll%>
 				</div>
 			</div>				
 		</div>		
-		<div class="tr" style="width:100%">				   
+		<div class="_tr" style="width:100%">				   
 			<div  style="width: 600px; margin: 0 auto">		
 				<div id='chart_<%=poll.id%>'></div>
 				<%= render_chart(poll.chart, 'chart_'+poll.id.to_s) %>	

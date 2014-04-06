@@ -67,42 +67,42 @@ $(document).ready(function(){
 	<%end%>
 <%end%>
 
-<section class="table" style="width: 100%;">
-	<div class="tr" style="margin-top:20px;
+<section class="_table" style="width: 100%;">
+	<div class="_tr" style="margin-top:20px;
 						   background:#FFFFFF;
 						   border-radius: 10px 10px 10px 10px;
 						   -moz-border-radius: 10px 10px 10px 10px;
 						   -webkit-border-radius: 10px 10px 10px 10px;
 						   border: 0px solid #000000;">		
-		<div class="tr" style="padding-top: 10px; width:100%">
+		<div class="_tr" style="padding-top: 10px; width:100%">
 			<div style="color: #FF4719; display: inline-block; float: right; margin-right: 130px; font-size: 20px; font-family: Microsoft JhengHei">
 				<%= pollCount(poll: @poll) %>人投過			
 			</div>	
 			<div style="width: 570px; margin: 0 auto ;">
-				<div class="tr" style="padding-bottom:5px;">
-					<div class="td">		
+				<div class="_tr" style="padding-bottom:5px;">
+					<div class="_td">		
 						<%=link_to image_tag(User.find(@poll.user.id).icon.url(:thumb), size: '42x42'), "https://www.facebook.com/"+@poll.user.facebook.identifier%>		
 					</div>	
-					<div class="td" style="padding-left:20px; line-height: 26px; font-size: 26px; font-family: Microsoft JhengHei">		
+					<div class="_td" style="padding-left:20px; line-height: 26px; font-size: 24px; font-family: Microsoft JhengHei">		
 						<%= @poll.title%>
 					</div>		
-					<div class="td" style="padding-left:10px; font-size: 10px; width: 98px; font-family: Microsoft JhengHei">		
+					<div class="_td" style="padding-left:10px; font-size: 10px; width: 98px; font-family: Microsoft JhengHei">		
 						<%= time_ago_in_words(@poll.created_at)%>之前
 					</div>
 				</div>	
-				<div class="tr" style="font-family: Microsoft JhengHei; font-weight: bold">		
+				<div class="_tr" style="font-family: Microsoft JhengHei; font-weight: bold">		
 					<%= pollChoice poll: @poll%>
 				</div>
 			</div>				
 		</div>		
-		<div class="tr" style="padding-left:20px; padding-bottom:40px; ">				   
-			<div class="td" style="width: 600px; ">		
+		<div class="_tr" style="padding-left:20px; padding-bottom:40px; ">				   
+			<div class="_td" style="width: 600px; ">		
 				<div id='chart_<%=@poll.id%>'></div>
 				<%= render_chart(@poll.chart, 'chart_'+@poll.id.to_s) %>	
 			</div>	
-			<div class="td" style="">
+			<div class="_td" style="">
 				<div class="fb-share-button" data-href="<%=request.original_url%>" data-type="button_count"></div>
-				<div class="tr" style="">		
+				<div class="_tr" style="">		
 					<% if userOptionBlank(id: @poll.id)==1 %>	
 						<%= link_to '投票', {controller: 'polls', action: 'vote', id: @poll.id}, class:"poll_button fancybox open_ajax" %>		
 					<% end %>
@@ -115,12 +115,12 @@ $(document).ready(function(){
 					<% end %>
 				</div>
 				<% if @poll.user.id==session[:user_id]%>	
-				<div class="tr" style="">
+				<div class="_tr" style="">
 					<%= link_to '刪除', @poll, method: :delete, data: { confirm: '您確定要刪除 "'+@poll.title+'" 這個主題嗎? (無法回復)' }, class: "poll_button"  %>						
 				</div>
 				<%end%>			
 			</div>	
-			<div class="td" style="">		
+			<div class="_td" style="">		
 				<div id='chart_<%=@poll.id+1%>'></div>
 				<%=render_chart(@chart2, 'chart_'+(@poll.id+1).to_s) %>
 			</div>				

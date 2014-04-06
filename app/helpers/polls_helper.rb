@@ -44,7 +44,7 @@ def reply_usr_td_main_content
 end
 
 def usr_img_tag(usr_img_url)
-	return image_tag(usr_img_url)
+	return image_tag(usr_img_url, :class=>"img", size:"35x35")
 end
 
 def reply_textarea

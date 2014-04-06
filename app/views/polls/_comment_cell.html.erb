@@ -9,10 +9,10 @@
 	<tr class="comment_<%=main_c.id.to_s%>_<%=c.id.to_s%> span12 offset1">
 <%end%>
 		<td class="<%=reply_table_content_span%>">
-		<%=image_tag(userinfo.icon.url(:thumb), size: '42x42')%>
+		<%=image_tag(userinfo.icon.url(:thumb), size: '35x35')%>
 		<small>
 		
-		<%=usr_page(userinfo.facebook.username,userinfo.facebook.identifier) %>
+		<%=usr_page(userinfo.facebook.name,userinfo.facebook.identifier) %>
 		(選擇 <%=PollOption.find(c.poll_option_id).title%></font> )
 		<%=c.created_at.time.to_formatted_s(:short)%>
 		
