@@ -1,5 +1,5 @@
 <%= form_for @newcomment, :remote=>true, :url=>{ :controller => 'polls', :action => 'createcomment' },:html => { :id => 'comment_form'} do |f| %>
-	<%=usr_img_tag(@cur_user_fb_info.picture).html_safe%>
+	<%=image_tag(@cur_user_fb_info.icon.url(:thumb), size: '42x42')%>
 	
 	<%= f.text_area :content, :class=>'field span3',:id=>'com_textarea', :rows=>"3", :placeholder=>'我要留言...' %>
 	

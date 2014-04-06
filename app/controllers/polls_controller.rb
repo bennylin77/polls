@@ -213,9 +213,11 @@ class PollsController < ApplicationController
   end
   
   def get_user_info
-	@cur_user_fb_info = User.find(session[:user_id]||1).facebook.profile
-	session[:username] = @cur_user_fb_info.name
-	session[:user_pic] = @cur_user_fb_info.picture
+  unless session[:user_id].blank?
+	 @cur_user_fb_info = User.find(session[:user_id])
+  end 
+#	session[:username] = @cur_user_fb_info.name
+#	session[:user_pic] = @cur_user_fb_info.picture
 	@choice = ""
 	Poll.find(params[:poll_id]).poll_options.each do |p|
 		unless p.user_options.where(user_id: session[:user_id]||1).blank?

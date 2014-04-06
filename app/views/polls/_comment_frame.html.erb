@@ -63,8 +63,8 @@ $("#main_submit").click(function(){return reg_submit_click("main_submit",0);});
 <td class="<%=reply_table_content_span%>">
 
 <%unless session[:user_id].blank?%>
-<%= render :partial=>'comment_form', :locals=>{:_type=>"main"}%>
-<div id="preview" style="display:none"></div>
+	<%= render :partial=>'comment_form', :locals=>{:_type=>"main"}%>
+	<div id="preview" style="display:none"></div>
 <%end%>
 </td>
 </tr>
