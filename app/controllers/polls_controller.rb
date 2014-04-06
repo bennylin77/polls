@@ -43,37 +43,15 @@ class PollsController < ApplicationController
 
       ### trend ###
       data_table = GoogleVisualr::DataTable.new
-      data_table.new_column('datetime', 'Date' )
+      data_table.new_column('datetime', 'Date' ) #first column is Datetime
       option_list = Array.new
       @poll.poll_options.order('id asc').each do |o|  
-        data_table.new_column('number', o.title)
+        data_table.new_column('number', o.title) #others are options' count
         option_list << o.id
       end
-      option_cnt = @poll.poll_options.count
-      tmp = 0
-      flag= 0
-      options =  Array.new
-      row_list = Array.new
-      PollOptionHistory.find(:all,
-                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
-                           :conditions=>{:poll_option_id=>option_list},
-                           :order=>'t asc,poll_option_id asc'
-                            ).each do |pp|		 
-          if tmp != pp.t
-            tmp = pp.t
-            if flag==1  # skip first loop
-              options << row_list   
-              row_list = Array.new    
-			  inner_cnt = 0
-            end
-            row_list << DateTime.parse(pp.t).since(8.hour)#pp.t.to_s     #first col is datetime
-            flag=1  
-          end
-          row_list << pp.count 
-          tmp = pp.t
-      end  
-      options << row_list
-      data_table.add_rows(options)
+      option_cnt = @poll.poll_options.count      #total options
+
+      data_table.add_rows(PollOptionHistory.count_for_chart(option_list,option_cnt))
       option = { width: 600, height: 300, title: '投票趨勢'}
       @chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
     else
