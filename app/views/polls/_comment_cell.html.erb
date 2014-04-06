@@ -1,0 +1,56 @@
+<% c=local_assigns[:_comment] %>
+<% userinfo=local_assigns[:_userinfo] %>
+<% type=local_assigns[:_type] %>
+<% main_c=local_assigns[:_main_comment] %>
+<% count=local_assigns[:_count] %>
+<% if type=="main" %>
+	<tr class="comment_<%=c.id.to_s%> <%=reply_table_whole_span%>" >
+<%else%>
+	<tr class="comment_<%=main_c.id.to_s%>_<%=c.id.to_s%> span12 offset1">
+<%end%>
+		<td class="<%=reply_table_content_span%>">
+		<%=image_tag(userinfo.icon.url(:thumb), size: '35x35', :class=>"img")%>
+		<small>
+		
+		<%=usr_page(userinfo.facebook.name,userinfo.facebook.identifier) %>
+		(選擇 <%=PollOption.find(c.poll_option_id).title%></font> )
+		<%=c.created_at.time.to_formatted_s(:short)%>
+		
+		</small>
+		</td>
+	</tr>
+<%if type=="main" %>
+	<%if c.sub_comments.count==0%>
+	<tr id="last_<%=c.id.to_s%>" class="comment_<%=c.id.to_s%> span12">
+	<%else%>
+	<tr class="comment_<%=c.id.to_s%> span12">
+	<%end%>
+<%else%>
+	<%if count == main_c.sub_comments.count%>
+		<tr id="last_<%=main_c.id.to_s%>" class="comment_<%=main_c.id.to_s%>_<%=c.id.to_s%> span12 offset1">
+	<%else%>
+		<tr class="comment_<%=main_c.id.to_s%>_<%=c.id.to_s%> span12 offset1">
+	<%end%>
+<%end%>  
+		<td class="<%=reply_table_content_span%>">
+		<contenttext><%=c.content.to_s%></contenttext>
+		<p style="margin-left:20px;margin-top:2px">
+		<%if type=="main"%>
+			共 <span id="main_sp_<%=c.id.to_s%>"><%=LikeOption.where(:comment_id=>c.id).count.to_s%></span> 人按讚 
+		<%else%>
+			共 <span id="sub_sp_<%=c.id.to_s%>"><%=LikeOption.where(:sub_comment_id=>c.id).count.to_s%></span> 人按讚 
+		<%end%>			
+		<%unless session[:user_id].blank?%>
+			<%=likebutton(type,c.id).html_safe%>
+			<%if type=="main" %>
+				<%=replybutton(c.id).html_safe%>
+			<%end%>
+		<%end%>
+		</p>
+	  </td>
+	</tr>
+<% if type=="main" %>
+	<script>$(".comment_<%=c.id%>").css("border-left","<%=j reply_left_border_css(c.poll_id,c.poll_option_id)%>");</script>
+<% else %>
+	<script>$(".comment_<%=main_c.id.to_s%>_<%=c.id.to_s%>").css("border-left","<%=j reply_left_border_css(c.comment.poll_id,c.poll_option_id).html_safe%>");</script>
+<% end %>

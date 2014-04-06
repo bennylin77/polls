@@ -2,7 +2,7 @@
 module ApplicationHelper
   include Authentication::HelperMethods
   def host
-    'http://rtes.funeasy.tw'
+    "http://140.113.166.130:6060"
   end  
   def userOptionBlank(hash={})
     @poll = Poll.find(hash[:id])
@@ -55,5 +55,10 @@ module ApplicationHelper
   def dayAdd(date=nil ,day=nil)
      date+day*(60 * 60 ) 
   end  
+  
+  def user_fb_info(user_id)
+	  return User.find(user_id).facebook.profile
+  end
+  
   
 end

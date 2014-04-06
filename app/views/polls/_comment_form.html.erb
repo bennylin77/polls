@@ -1,0 +1,19 @@
+<%= form_for @newcomment, :remote=>true, :url=>{ :controller => 'polls', :action => 'createcomment' },:html => { :id => 'comment_form'} do |f| %>
+	<%=image_tag(@cur_user_fb_info.icon.url(:thumb), size: '42x42', :class=>"img")%>
+	
+	<%= f.text_area :content, :class=>'field span3',:id=>'com_textarea', :rows=>"3", :placeholder=>'我要留言...' %>
+	
+	<%= f.hidden_field :poll_id, :value => params[:poll_id] %>
+	<%= f.hidden_field :type, :value =>local_assigns[:_type] %>
+	<%= f.hidden_field :comment_id, :value=>'id_for_replace'%>
+	<% if userOptionBlank(id: params[:poll_id])==1 %>
+		<script>
+			$("#com_textarea").attr({"placeholder":"請先投票!","readonly":''});
+		</script>
+		<%= link_to '投票', {controller: 'polls', action: 'vote', id: params[:poll_id]}, class:"btn btn-mini btn-fancybox open_ajax disabled" %>
+	<%else%>
+		
+			<%= f.submit "送出", :class=>"btn btn-mini disabled", :id=>local_assigns[:_type]+"_submit" %>
+		
+	<% end %>
+<% end %>

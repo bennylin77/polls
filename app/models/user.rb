@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
   has_many :polls
   has_many :user_options
   has_many :poll_options  
+  has_many :like_options
+  has_many :comments
+  has_many :sub_comments
   has_attached_file :icon,
                     :styles => {:thumb => '60x60>', :original => '100x100>' }  
   validates_attachment :icon, :content_type=>{:content_type =>['image/jpeg', 'image/png', 'image/gif']}, 

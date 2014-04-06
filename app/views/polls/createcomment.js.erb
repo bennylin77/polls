@@ -1,0 +1,15 @@
+
+<%if params[:comment][:type] == "sub"%>
+var element = $('#last_<%=@last_id.to_s%>') ;
+$('#subreply_<%=@last_id.to_s%>').remove();
+var comment_cell='<%= escape_javascript(render :partial=>'comment_cell', :locals=>{:_type=>"sub", :_comment=>@sub_com, :_userinfo=>@cur_user_fb_info, :_main_comment=>@sub_com.comment, :_count=>@sub_com.comment.sub_comments.count}) %>';
+element.after(comment_cell);  //sub  render comment_cell
+element.removeAttr('id');
+<%else%>
+$('#com_textarea').val('') ;
+var comment_cell='<%= escape_javascript(render :partial=>'comment_cell', :locals=>{:_type=>"main", :_comment=>@comment, :_userinfo=>@cur_user_fb_info}) %>';
+$('#comments tr:last').after(comment_cell);
+$('#loader').hide();
+$('#main_submit').show();
+<%end%>
+

@@ -14,7 +14,11 @@ Polls::Application.routes.draw do
   post  "polls/refPost" 
   
   post  "polls/vote"
-  
+  post  "polls/createcomment"
+  get   "polls/createcomment"
+  get   "polls/get_user_info"
+  get 	"polls/like_control"
+ # get   "polls/sub_reply"
   root :to => 'polls#index'
   
   resources :polls

@@ -43,50 +43,25 @@ class PollsController < ApplicationController
 
       ### trend ###
       data_table = GoogleVisualr::DataTable.new
-      data_table.new_column('datetime', 'Date' )
+      data_table.new_column('datetime', 'Date' ) #first column is Datetime
       option_list = Array.new
       @poll.poll_options.order('id asc').each do |o|  
-        data_table.new_column('number', o.title)
+        data_table.new_column('number', o.title) #others are options' count
         option_list << o.id
       end
-      option_cnt = @poll.poll_options.count
-      tmp = 0
-      flag= 0
-      options =  Array.new
-      row_list = Array.new
-      inner_cnt = 0
-      PollOptionHistory.find(:all,
-                           :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
-                           :conditions=>{:poll_option_id=>option_list},
-                           :order=>'t asc,poll_option_id asc'
-                            ).each do |pp|
-        if tmp != pp.t
-          tmp = pp.t
-            if flag==1  # skip first loop
-              if inner_cnt < option_cnt
-                while inner_cnt < option_cnt do
-                  row_list << 0
-                  inner_cnt = inner_cnt + 1
-                end
-              end
-              options << row_list   
-              row_list = Array.new    
-              inner_cnt = 0
-            end
-            row_list << DateTime.parse(pp.t).since(8.hour)#pp.t.to_s     #first col is datetime
-            flag=1  
-          end
-          inner_cnt = inner_cnt + 1
-          row_list << pp.count 
-          tmp = pp.t
-      end  
-      options << row_list
-      data_table.add_rows(options)
-      option = { width: 600, height: 300, title: '投票趨勢', hAxis: {format: 'MM/dd HH:mm'}}
+      option_cnt = @poll.poll_options.count      #total options
+
+      result = PollOptionHistory.count_for_chart(option_list,option_cnt)
+      unless result.blank?
+        data_table.add_rows(result)
+      end    
+      option = { width: 600, height: 300, title: '投票趨勢'}
       @chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
     else
       redirect_to root_url
-    end   
+    end  
+    
+  #  @comment = Comment.where(:poll_id => @poll.id)   # test line
   end
   
   def vote
@@ -330,4 +305,107 @@ class PollsController < ApplicationController
     
   end
   
+  def get_user_info
+  unless session[:user_id].blank?
+	 @cur_user_fb_info = User.find(session[:user_id])
+  end 
+#	session[:username] = @cur_user_fb_info.name
+#	session[:user_pic] = @cur_user_fb_info.picture
+	@choice = ""
+	Poll.find(params[:poll_id]).poll_options.each do |p|
+		unless p.user_options.where(user_id: session[:user_id]||1).blank?
+			@choice = p.title
+		end	
+	end
+	
+	@comment = Comment.where(:poll_id => params[:poll_id])
+	@newcomment= Comment.new
+  end
+  
+  def createcomment
+	
+  	@cur_user_fb_info = User.find(session[:user_id])
+
+	
+	Poll.find(params[:comment][:poll_id]).poll_options.each do |p|
+		unless p.user_options.where(user_id: session[:user_id]).blank?
+			@cur_option_id = p.id
+		end	
+	end
+	
+	if request.post?
+		if params[:comment][:type] == "main"
+			@newcomment1 = Comment.new
+			@newcomment1.user_id=session[:user_id]
+			@newcomment1.poll_id=params[:comment][:poll_id]
+			@newcomment1.content=params[:comment][:content]
+			
+			@newcomment1.poll_option_id = @cur_option_id
+		
+			@newcomment1.save!
+			
+			#@comment = Comment.where(:poll_id => params[:comment][:poll_id])
+			#params[:poll_id] = params[:comment][:poll_id]
+		
+		elsif params[:comment][:type] == "sub"  # sub_comment with method GET (request.get?)
+		#	@flag = 0
+			@sub_com = SubComment.new
+			@sub_com.user_id=session[:user_id]
+			@sub_com.comment_id=params[:comment][:comment_id]
+			@sub_com.content=params[:comment][:content]
+	
+			@sub_com.poll_option_id = @cur_option_id			
+		
+			#@sub_com.content = params[:_content]
+			@sub_com.save!
+			@last_id=params[:comment][:comment_id]
+			#@comment = Comment.where(:poll_id => @poll_id)
+			#params[:poll_id] = @poll_id
+		else 
+		end
+	end	
+	@comment = Comment.where(:poll_id => params[:comment][:poll_id]).last
+	params[:poll_id] = params[:comment][:poll_id]
+	@newcomment = Comment.new
+  end
+  
+  def like_control
+  	@id = params[:_id]
+  	@span_id = ""
+  	@div_id = ""
+  	@div_content = ""
+  	@type = params[:_type]
+  	if params[:_flag].to_i == 1
+  		if @type=="main"
+  			@like = LikeOption.where(:user_id=>session[:user_id], :comment_id=>params[:_id]).first
+  		else
+  			@like = LikeOption.where(:user_id=>session[:user_id], :sub_comment_id=>params[:_id]).first
+  		end	
+  		@like.destroy
+  		@div_content = "讚"
+  	else
+		@like = LikeOption.new(:user_id=>session[:user_id])
+		if @type=="main"
+			@like.comment_id = params[:_id]
+		else
+			@like.sub_comment_id = params[:_id]
+		end
+		@like.save!
+		@div_content = "收回讚"
+	end
+	
+	if @type=="main"
+		@button_id = "main_"+params[:_id].to_s
+		@span_id = "main_sp_"+params[:_id].to_s
+	else
+		@button_id = "sub_"+params[:_id].to_s
+		@span_id = "sub_sp_"+params[:_id].to_s
+	end
+	
+	respond_to do |format|
+		format.js {}
+	end
+  end
+  
+
 end
