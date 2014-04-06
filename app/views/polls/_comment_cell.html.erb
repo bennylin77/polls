@@ -9,7 +9,7 @@
 	<tr class="comment_<%=main_c.id.to_s%>_<%=c.id.to_s%> span12 offset1">
 <%end%>
 		<td class="<%=reply_table_content_span%>">
-		<%=image_tag(userinfo.icon.url(:thumb), size: '35x35')%>
+		<%=image_tag(userinfo.icon.url(:thumb), size: '35x35', :class=>"img")%>
 		<small>
 		
 		<%=usr_page(userinfo.facebook.name,userinfo.facebook.identifier) %>
