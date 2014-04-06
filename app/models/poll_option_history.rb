@@ -10,6 +10,7 @@ class PollOptionHistory < ActiveRecord::Base
       options =  Array.new
       row_list = Array.new
       inner_cnt = 0
+      total_count = 0
       PollOptionHistory.find(:all,
                            :select=>'poll_option_id,count,DATE_FORMAT(created_at,"%Y-%m-%d %H:00") as t',
                            :conditions=>{:poll_option_id=>option_list},
@@ -32,12 +33,19 @@ class PollOptionHistory < ActiveRecord::Base
           row_list << pp.count 
           tmp = pp.t
           inner_cnt = inner_cnt + 1
+          total_count = total_count + 1
       end  
+      if total_count ==0
+        return nil
+      end  
+
       while  inner_cnt < option_cnt 
- 		row_list << 0
- 		inner_cnt = inner_cnt + 1
- 	  end
+ 		   row_list << 0
+ 		   inner_cnt = inner_cnt + 1
+ 	    end
       options << row_list
+
+      return options
   end	
 
 end

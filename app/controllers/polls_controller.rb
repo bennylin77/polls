@@ -51,7 +51,10 @@ class PollsController < ApplicationController
       end
       option_cnt = @poll.poll_options.count      #total options
 
-      data_table.add_rows(PollOptionHistory.count_for_chart(option_list,option_cnt))
+      result = PollOptionHistory.count_for_chart(option_list,option_cnt)
+      unless result.blank?
+        data_table.add_rows(result)
+      end    
       option = { width: 600, height: 300, title: '投票趨勢'}
       @chart2 = GoogleVisualr::Interactive::LineChart.new(data_table, option)
     else
