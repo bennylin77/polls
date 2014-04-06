@@ -4,4 +4,5 @@ class Comment < ActiveRecord::Base
 	
 	has_many :sub_comments				
 	has_many :like_options
+	belongs_to :user
 end

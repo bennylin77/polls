@@ -70,12 +70,12 @@ $("#main_submit").click(function(){return reg_submit_click("main_submit",0);});
 </tr>
 
 <%@comment.each do |c|%>
-	<%userinfo = user_fb_info(c.user_id)%>
+	<%userinfo = c.user%>
 	<%= render :partial=>'comment_cell', :locals=>{:_type=>"main", :_comment=>c, :_userinfo=>userinfo}%>
 	
 	<%count = 1%>
 	<%c.sub_comments.each do |sub_c|%>
-		<%sub_info = user_fb_info(sub_c.user_id)%>
+		<%sub_info = sub_c.user%>
 		<%= render :partial=>'comment_cell', :locals=>{:_type=>"sub", :_comment=>sub_c, :_userinfo=>sub_info, :_main_comment=>c, :_count=>count}%>			
 		<%count=count+1%>			
 	<%end%>

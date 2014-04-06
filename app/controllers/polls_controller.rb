@@ -229,12 +229,11 @@ class PollsController < ApplicationController
   
   def createcomment
 	
-  	#@flag = 1
-  	@cur_user_fb_info = User.find(session[:user_id]||1).facebook.profile
-  	#@choice = ""
+  	@cur_user_fb_info = User.find(session[:user_id])
+
 	
 	Poll.find(params[:comment][:poll_id]).poll_options.each do |p|
-		unless p.user_options.where(user_id: session[:user_id]||1).blank?
+		unless p.user_options.where(user_id: session[:user_id]).blank?
 			@cur_option_id = p.id
 		end	
 	end
