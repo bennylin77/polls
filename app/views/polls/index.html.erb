@@ -5,8 +5,24 @@
 	<meta property="og:image" content="<%=root_url%><%=image_path('logo_250x250_t.png')%>" />
 
 <%end%>
-
-<div class="fb-like" data-href="<%=root_url%>" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+<div style="display: block">
+<div style="display: inline; " class="fb-like" data-href="<%=root_url%>" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+<a class="contact_us_button" href="#inline1">關於我們</a>
+<div id="inline1" style="width:600px;display: none;">
+	<h3 style="font-family: Microsoft JhengHei;">關於我們</h3>
+	<div style="font-family: Microsoft JhengHei;">希望建立一個公民資訊平台，讓大家了解民眾對各個議題的意見取向，了解公民想法，呈現客觀的民意，有任何想法或意見，歡迎聯絡我們的熱血團隊!</div>
+	<br>
+	<div style="font-family: Microsoft JhengHei; font-weight: bold;">交大資工所 簡子陽 t6847kimo@gmail.com</div>
+	<div style="font-family: Microsoft JhengHei; font-weight: bold;">交大資工所 羅濟韋 u9510606@gmail.com</div>	
+	<div style="font-family: Microsoft JhengHei; font-weight: bold;">交大電控所 林　起 bennylin77@gmail.com</div>
+	<div style="margin-top: 5px;"><a href='https://www.facebook.com/instantVote' class="login_fb">我們的粉絲團</a></div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".contact_us_button").fancybox();
+	});
+</script>
+</div>
 <section class="_table" style="width: 50%; margin: 0 auto">
 <% @polls.each do |poll| %>		
 	<div class="_tr" style="margin-top:15px;

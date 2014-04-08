@@ -256,6 +256,28 @@ body > .header .header_right #on_login_div img{
 	background: #757575;
 }
 
+.contact_us_button { 
+	cursor: pointer;
+	background:	#525252;
+	text-indent:0;
+	display:inline-block;
+	color:#FFFFFF;
+	font-family: Microsoft JhengHei;
+	font-size:16px;
+	font-weight:bold;
+	font-style:normal;
+	height:30px;
+	line-height:30px;
+	width:90px;
+	text-decoration:none;
+	text-align:center;
+	border-radius: 3px;	
+	float: right;
+}
+
+.contact_us_button:hover {
+	background: #878787;
+}
 
 /*-----------------]:  body   :[---------------------*/
 .poll_button {
