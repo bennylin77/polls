@@ -1,19 +1,19 @@
 <%=form_tag({controller: 'polls', action: 'vote'}, id: 'form')  do%>
-<section class="table">	
-   	<div class="tr" style="padding-bottom: 10px; font-size: 22px; font-weight: bold"> 
+<section class="_table">	
+   	<div class="_tr" style="padding-bottom: 10px; font-size: 22px; font-weight: bold"> 
    		<%=@poll.title%>
    	</div>
-   	<div class="tr" style="padding-bottom: 10px; font-size: 18px;">    	
+   	<div class="_tr" style="padding-bottom: 10px; font-size: 18px;">    	
     	<%=@poll.description%>
   	</div>
-  	<dic class="tr radio">
+  	<dic class="_tr radio">
   		<%@poll.poll_options.each do |o|%>
-	    <div class="tr" style="padding-bottom: 10px; font-size: 15px;">     	
+	    <div class="_tr" style="padding-bottom: 10px; font-size: 15px;">     	
 	    	<%=radio_button_tag 'option', o.id, id: o.id%>
 	    	<%=label_tag 'option_'+o.id.to_s, o.title, class: 'vote_radio_label'%>
 	    </div>
     	<%end%>
-		<div class="tr" style="padding-bottom: 10px; font-size: 15px;"> 
+		<div class="_tr" style="padding-bottom: 10px; font-size: 15px;"> 
 			<%=radio_button_tag 'option', '0', id: '0'%>	 
 			<%=label_tag 'option_0', '自訂選項:', class: 'vote_radio_label'%>   	
 	    	<%=text_field_tag 'new_option', nil, size: 50%>   
@@ -21,7 +21,7 @@
  	</div>  
  	 
     <%=hidden_field_tag 'id', @poll.id%>
-  	<div class="tr" style="padding-bottom: 10px;"> 	
+  	<div class="_tr" style="padding-bottom: 10px;"> 	
 		<%=submit_tag "送出", class: "button_small_b"%>
 	</div>
 </section>	
@@ -48,39 +48,3 @@ $("#form").bind("submit", function () {
 	<%end%>
 <%end%>
 </script>
-
-<style>
-    .radio .vote_radio_label {  
-        display: inline-block;  
-        cursor: pointer;  
-        position: relative;  
-        padding-left: 25px;  
-        margin-right: 15px;  
-        font-size: 13px;  
-    }
-    .radio input[type=radio] {  
-        display: none;  
-    }   
-    .radio .vote_radio_label:before {  
-        content: "";  
-        display: inline-block;   
-        width: 16px;  
-        height: 16px;      
-        margin-right: 10px;  
-        position: absolute;  
-        left: 0;  
-        bottom: 1px;  
-        background-color: #aaa;  
-        box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);  
-    }  
-    .radio .vote_radio_label:before {  
-        border-radius: 8px;  
-    }      
-    .radio input[type=radio]:checked + .vote_radio_label:before {  
-        content: "\2022";  
-        color: #f3f3f3;  
-        font-size: 30px;  
-        text-align: center;  
-        line-height: 18px;  
-    }          
-</style>

@@ -532,7 +532,7 @@ body > .header .header_right #on_login_div img{
         background-color:#636363;
 }
 /*-----------------]: show ajax :[---------------------*/
-/*
+
 .show_ajax
 {
   margin:10px auto;
@@ -556,7 +556,7 @@ body > .header .header_right #on_login_div img{
 	background:	#4F6AA2;
 	border:2px solid #4F6AA2;
 }
-*/
+
 /*-----------------]: reference :[---------------------*/
 .reference_post{
 	width: 450px;
@@ -596,9 +596,10 @@ body > .header .header_right #on_login_div img{
 .ref_main_urlive-container-del:hover{
 	color:	#7E7E7E;
 }
+/*
 * {
     font-family:'Segoe UI', 'Open Sans', sans-serif;
-}
+}*/
 textarea {
     width:450px;
     height:80px;
