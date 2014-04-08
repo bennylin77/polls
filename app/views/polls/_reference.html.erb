@@ -10,7 +10,13 @@ $(document).ready(function()
 			data: { link: $('.ref_content').val(), poll_id: <%=@poll.id.to_s%>}
 		});
 		request.done(function( data ) {
-			createContainer(data);						
+			if(data.success)
+				createContainer(data);						
+			else
+			$.gritter.add({
+            title: data.title,
+            text : data.message,
+            time : 5000});
 		});
 		request.fail(function( jqXHR, textStatus ) {
 			alert( "Request failed: " + textStatus );
@@ -187,12 +193,14 @@ $(document).ready(function()
 			}
 		});		
 	};	
-});
+	
+});	
 </script>
 <br>
-<th>
 <p style="font-size: 28px; font-family: Microsoft JhengHei; font-weight: bold;">參考資料</p>
-</th>
+<table class="table">
+<tr>
+<td>
 <%if !session[:user_id].blank?%>	
 <div id='reference_post'>
 	<textarea class='ref_content' placeholder="參考連結..."></textarea><br>
@@ -202,4 +210,8 @@ $(document).ready(function()
 	</div>
 </div>
 <%end%>
+</td>
+</tr>
+</table>
+
 <div id='reference_main'></div>	

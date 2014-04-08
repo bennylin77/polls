@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   rescue_from FbGraph::Exception, :with => :fb_graph_exception
 
   def host
-    "http://140.113.166.130:6060"
+    "http://rtes.funeasy.tw"
   end
   
   def fb_graph_exception(e)

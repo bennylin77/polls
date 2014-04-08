@@ -10,9 +10,11 @@
 		<script>
 			$("#com_textarea").attr({"placeholder":"請先投票!","readonly":''});
 		</script>
-		<%= link_to '投票', {controller: 'polls', action: 'vote', id: params[:poll_id]}, class:"btn btn-mini btn-fancybox open_ajax disabled" %>
+		<p align="right">
+		<%= link_to '投票', {controller: 'polls', action: 'vote', id: params[:poll_id]}, class:"btn btn-fancybox open_ajax disabled" %>
+		</p>
 	<%else%>
-		<span class='ref_post ref_button' id="<%=local_assigns[:_type]%>_submit"onclick="$('#comment_form').submit();">張貼</span>
+		<span class='ref_post ref_button' id="<%=local_assigns[:_type]%>_submit"onclick="$('#comment_form').submit();">留言</span>
 			
 		
 	<% end %>

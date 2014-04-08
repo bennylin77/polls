@@ -14,8 +14,8 @@
 	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
 	    <%= f.label '投票主題 (盡量針對此次學運事件)' %>
 	  </div>  
-	  <div class="tr" style="padding-bottom: 10px;"> 
-	    <%= f.text_field :title, size: 50%>
+	  <div class="tr" style=""> 
+	    <%= f.text_field :title, size: 90%>
 	  </div>  
 	  <!--
 	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
@@ -25,17 +25,17 @@
 	    <%= f.text_area :description %>
 	  </div>
 	  -->  
-	  <div class="tr" style="padding-bottom: 10px; font-size: 22px;">
+	  <div class="tr" style="font-size: 22px;">
 	  	<%= f.label "投票選項"  %><br /> 
 	  </div>
 	  <div class="tr" id="optionField">
 	  </div>
 	  <div class="tr" style="padding-bottom: 15px;">
-		<div class="td">
-		<input type="button" onclick="addOption()" name="add" value="新增選項" class="button_small_b"/>
+		<div class="td" style=" padding-right: 5px;">
+			<span onclick="addOption();" class="button_small_b">新增選項</span>	
 		</div>
 		<div class="td">		
-		<input type="button" onclick="delOption()" name="add" value="刪除選項" class="button_small_b"/>
+			<span onclick="delOption();" class="button_small_b">刪除選項</span>	
 		</div>
 	  </div>
 	  <div class="tr" style="padding-left: 85px;">
