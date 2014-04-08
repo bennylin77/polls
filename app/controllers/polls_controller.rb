@@ -213,7 +213,7 @@ class PollsController < ApplicationController
   end
   
   def referenceDemo
-    
+    @poll=Poll.find(22);
   end
   
   def reference

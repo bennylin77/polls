@@ -20,7 +20,7 @@ $(document).ready(function()
 		var request =$.ajax({
 			url: "/polls/refPost",
 			type: "POST",
-			data: { link: $('.ref_content').val(), poll_id: 22}
+			data: { link: $('.ref_content').val(), poll_id: <%=@poll.id.to_s%>}
 		});
 		request.done(function( data ) {
 			createContainer(data);						
@@ -55,7 +55,7 @@ $(document).ready(function()
 		var request =$.ajax({
 			url: "/polls/reference",
 			type: "GET",
-			data: { poll_id: 22}
+			data: { poll_id: <%=@poll.id.to_s%>}
 		});
 		request.done(function( data ) {	
 			jQuery.each(data, function(i, val)
@@ -67,11 +67,37 @@ $(document).ready(function()
 			alert( "Request failed: " + textStatus );
 		});
 	};
-	
+		
 	function createContainer(val) 
 	{
-		var newSection = $(document.createElement('section')).attr({ id: 'section_'+val.id, class: 'ref_main_section'});				
-		newSection.html('<div style="font-size: 15px;">'+val.id+'</div>'+val.link.replace(/\n/g, "<br />"));	
+		val.link=val.link.replace(/\n/g, "<br/>");
+		var regex = /((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/g;
+		var replaced = val.link.search(regex) >= 0;
+		if(replaced)
+		{
+    		val.link = val.link.replace(regex, "<div id='link_"+val.id+"'><a href='$1' target='_blank'>$1</a></div>");		
+			var newSection = $(document.createElement('section')).attr({ id: 'section_'+val.id, class: 'ref_main_section'});							
+			html = $.parseHTML(val.link);
+			newSection.append('<div style="font-size: 15px;">'+val.id+'</div>');	
+			newSection.append(html);
+			$( html ).bind( "click", function() {		
+				var request =$.ajax({
+					url: "/polls/refClick",
+					type: "GET",
+					data: { reference_id: val.id, poll_id: <%=@poll.id.to_s%>}
+				});
+				request.done(function( data ) {
+					$("#click_"+data.reference_id).html(data.count);
+				});
+				request.fail(function( jqXHR, textStatus ) {	
+				});			
+			});	
+		}
+		else
+		{	
+			var newSection = $(document.createElement('section')).attr({ id: 'section_'+val.id, class: 'ref_main_section'});				
+			newSection.html('<div style="font-size: 15px;">'+val.id+'</div>'+val.link);	
+		}
 		var outerDiv= $(document.createElement('div')).attr({ id: 'urlive-container_outer_'+val.id, class: 'ref_main_urlive_outer'});	
 		var newDiv = $(document.createElement('div')).attr({ id: 'urlive-container_'+val.id, class: 'ref_main_urlive-container'});
 		var newSpan = $(document.createElement('span')).attr({ id: 'ref_loading_'+val.id});
@@ -88,22 +114,18 @@ $(document).ready(function()
 			var newSpanDel = $(document.createElement('span')).attr({ id: 'urlive-container_del_'+val.id, class: 'ref_main_urlive-container-del'});
 			newSpanDel.append(" | 刪除");
 			$( newSpanDel ).bind( "click", function() {		
-			var request =$.ajax({
-				url: "/polls/refDelete",
-				type: "GET",
-				data: { reference_id: val.id}
-			});
-			request.done(function( data ) {
-				$('#section_'+data.reference_id).remove();
-					
-			});
-			request.fail(function( jqXHR, textStatus ) {	
-			});
-				
-		});			
-			
-			
-			
+				var request =$.ajax({
+					url: "/polls/refDelete",
+					type: "GET",
+					data: { reference_id: val.id}
+				});
+				request.done(function( data ) {
+					$('#section_'+data.reference_id).remove();
+						
+				});
+				request.fail(function( jqXHR, textStatus ) {	
+				});		
+			});						
 		}
 		//accept
 		var newSpanAcc = $(document.createElement('span')).attr({ id: 'urlive-container_acc_'+val.id, class: 'ref_main_urlive-container-acc'});
@@ -122,7 +144,7 @@ $(document).ready(function()
 			var request =$.ajax({
 				url: "/polls/refAccept",
 				type: "GET",
-				data: { reference_id: val.id, poll_id: 22, accept: accept_bind_c}
+				data: { reference_id: val.id, poll_id: <%=@poll.id.to_s%>, accept: accept_bind_c}
 			});
 			request.done(function( data ) {
 				$("#acc_"+data.reference_id).html(data.count);
@@ -146,7 +168,7 @@ $(document).ready(function()
 			var request =$.ajax({
 				url: "/polls/refClick",
 				type: "GET",
-				data: { reference_id: val.id, poll_id: 22}
+				data: { reference_id: val.id, poll_id: <%=@poll.id.to_s%>}
 			});
 			request.done(function( data ) {
 				$("#click_"+data.reference_id).html(data.count);
@@ -178,6 +200,7 @@ $(document).ready(function()
 			}
 		});		
 	};	
+	
 });	
 
 </script>
