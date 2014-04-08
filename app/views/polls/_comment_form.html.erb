@@ -1,7 +1,7 @@
 <%= form_for @newcomment, :remote=>true, :url=>{ :controller => 'polls', :action => 'createcomment' },:html => { :id => 'comment_form'} do |f| %>
-	<%=image_tag(@cur_user_fb_info.icon.url(:thumb), size: '42x42', :class=>"img")%>
 	
-	<%= f.text_area :content, :class=>'field span3',:id=>'com_textarea', :rows=>"3", :placeholder=>'我要留言...' %>
+	
+	<%= f.text_area :content, :class=>'field span5',:id=>'com_textarea', :rows=>"3", :placeholder=>'留言...' %>
 	
 	<%= f.hidden_field :poll_id, :value => params[:poll_id] %>
 	<%= f.hidden_field :type, :value =>local_assigns[:_type] %>
@@ -12,8 +12,8 @@
 		</script>
 		<%= link_to '投票', {controller: 'polls', action: 'vote', id: params[:poll_id]}, class:"btn btn-mini btn-fancybox open_ajax disabled" %>
 	<%else%>
-		
-			<%= f.submit "送出", :class=>"btn btn-mini disabled", :id=>local_assigns[:_type]+"_submit" %>
+		<span class='ref_post ref_button' id="<%=local_assigns[:_type]%>_submit"onclick="$('#comment_form').submit();">張貼</span>
+			
 		
 	<% end %>
 <% end %>
