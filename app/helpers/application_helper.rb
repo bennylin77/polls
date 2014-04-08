@@ -2,7 +2,7 @@
 module ApplicationHelper
   include Authentication::HelperMethods
   def host
-    "http://140.113.166.130:6060"
+    "http://rtes.funeasy.tw"
   end  
   def userOptionBlank(hash={})
     @poll = Poll.find(hash[:id])

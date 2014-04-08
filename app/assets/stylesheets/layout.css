@@ -433,8 +433,7 @@ body > .header .header_right #on_login_div img{
 /* This button was generated using CSSButtonGenerator.com */
 
 
-/*-----------------]: table :[---------------------*/
-
+/*-----------------]: _table :[---------------------*/
 ._table{   	
     border-collapse: collapse;
     border-spacing: 0;
@@ -450,6 +449,25 @@ body > .header .header_right #on_login_div img{
     display: table-cell;        
 }
 ._td:hover {
+    display: table-cell;        
+}
+
+/*-----------------]: table :[---------------------*/
+.table{   	
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;	      
+}
+.table  a:hover{   	
+	text-decoration: none;		      
+}
+.tr{   	
+   	display: table-row, inline-block; 
+} 
+.td{   
+    display: table-cell;        
+}
+.td:hover {
     display: table-cell;        
 }
 /*-----------------]: post :[---------------------*/
@@ -475,7 +493,8 @@ body > .header .header_right #on_login_div img{
 
 
 .button_b { 
-        background-color:#1b1f21;       
+        background-color:#1b1f21;   
+        font-family: Microsoft JhengHei;    
         display:inline-block;
         color:#ffffff;
         font-family:Arial;
@@ -484,6 +503,7 @@ body > .header .header_right #on_login_div img{
         padding: 0px 25px;
         text-decoration:none;
         cursor:pointer;
+        border-radius: 3px;
 }
 
 .button_b:hover {
@@ -491,19 +511,25 @@ body > .header .header_right #on_login_div img{
 }
 
 .button_small_b {     
-        background-color:#1b1f21;         
+        background-color:#3F3F3F;         
         display:inline-block;
         color:#ffffff;
-        font-family:Arial;
+		font-family: Microsoft JhengHei;
+		font-weight:bold;
         font-size:15px;
         font-weight:normal;
-        padding: 0px 25px;
+		height:30px;
+		line-height:30px;
+		width:80px;
         text-decoration:none;
         cursor:pointer;
+        text-indent:0;
+        text-align:center;
+        border-radius: 3px;
 }
 
 .button_small_b:hover { 
-        background-color:#4F5559;
+        background-color:#636363;
 }
 /*-----------------]: show ajax :[---------------------*/
 /*
