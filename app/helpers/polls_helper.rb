@@ -33,10 +33,10 @@ def replybutton(i)
 	return html
 end
 
-def editbutton(type,i,content)
+def editbutton(type,i)
 	html=""
 	html<<'<button class="btn btn-mini btn-primary disabled" type="button" onclick="show_edit('
-	html<<"'"<<type<<"','"<<i.to_s<<"','"<<content.to_s<<"'"
+	html<<"'"<<type<<"','"<<i.to_s<<"'"
 	html<<')">修改</button>'
 	return html
 end
@@ -74,4 +74,9 @@ def get_color(poll_id,poll_option_id)
   	Poll.find(poll_id).poll_options.order("id ASC").each_with_index do |o, index|
   		if poll_option_id == o.id
   			return Polls::Application.config.chartcolor[index]
+		end
+	end
+	return "transparent" 
+end
+
 end

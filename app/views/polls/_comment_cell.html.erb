@@ -46,7 +46,7 @@
 				<%=replybutton(c.id).html_safe%>
 			<%end%>
 			<%if c.user_id==session[:user_id]%>
-				<%=editbutton(type,c.id,c.content).html_safe%>
+				<%=editbutton(type,c.id).html_safe%>
 			<%end%>
 		<%end%>
 		</p>

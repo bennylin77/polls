@@ -1,60 +1,17 @@
-<%if !userOption(poll: @poll).blank?%>
-<script type="text/javascript" charset="utf-8">
-$(function() {
-  var d, h, m, s;
-  $('#clock_countdown').countdown(new Date( 
-  									<%=(userOption(poll: @poll).updated_at+60 * 60-140).utc.to_i*1000%>), function(event) {
-    var timeFormat = "%m<span style=\"font-size: 8px;\">:</span>%s"
-        $this = $(this);
-    switch(event.type) {
-      case "days":
-        d = event.value;
-        break;
-      case "hours":
-        h = event.value;
-        break;
-      case "minutes":
-        m = event.value;
-        break;
-      case "seconds":
-        s = event.value;
-        break;
-      case "finished":
-        $this.fadeTo('slow', 0.5);
-        break;
-    }
-    // Assemble time format
-    if(d > 0) {
-      timeFormat = timeFormat.replace(/\%d/, d);
-    } else {
-      timeFormat = timeFormat.replace(/\%d<span style=\"font-size: 8px;\">天<\/span>/, '');
-    }
-    timeFormat = timeFormat.replace(/\%h/, h);
-    timeFormat = timeFormat.replace(/\%m/, m);
-    timeFormat = timeFormat.replace(/\%s/, s);
-    // Display
-    $this.html(timeFormat);
-  });
-});
+<div id='reference'>
+	<div id='reference_post'>
+		<textarea class='ref_content' placeholder="參考連結..."></textarea><br>
+		<input type='button' value='張貼' class='ref_post' href='#'>
+		<div class="urlive-container"> 
+		    <span class="ref_post_loading">Loading...</span>
+		</div>
+	</div>
+	<div id='reference_main'>
+	</div>		
+</div>	
 
-</script>
 
-<%end%>
-
-<script type="text/javascript" charset="utf-8">
-$(document).ready(function(){
-	$.ajax({ 
-		type: "GET",
-		url: "get_user_info",
-		data: {poll_id:<%=@poll.id.to_s%>},
-        success: function(){},
-        error: function(){
-        	alert("Inernal server error..");
-        	$("#info").html("ERROR");
-        	}
-		});
-});
-
+<script>
 $(document).ready(function()
 {	
 	refresh();
@@ -247,92 +204,3 @@ $(document).ready(function()
 });	
 
 </script>
-
-<%if !@poll.blank?%>
-	<% content_for :show_fb do %>
-	    <meta property="og:site_name" content="instant 即時公民投票" />
-	  	<meta property="og:title" content="instant 即時公民投票: <%= @poll.title%>" />
-	  	<meta property="og:image" content="<%=host%><%=image_path('logo_250x250_t.png')%>" />	  	
-	  	<meta property="og:description" content="<%= @poll.description%>" />	
-	<%end%>
-<%end%>
-
-<section class="_table" style="width: 100%;">
-	<div class="_tr" style="margin-top:20px;
-						   background:#FFFFFF;
-						   border-radius: 10px 10px 10px 10px;
-						   -moz-border-radius: 10px 10px 10px 10px;
-						   -webkit-border-radius: 10px 10px 10px 10px;
-						   border: 0px solid #000000;">		
-		<div class="_tr" style="padding-top: 10px; width:100%">
-			<div style="color: #FF4719; display: inline-block; float: right; margin-right: 130px; font-size: 20px; font-family: Microsoft JhengHei">
-				<%= pollCount(poll: @poll) %>人投過			
-			</div>	
-			<div style="width: 570px; margin: 0 auto ;">
-				<div class="_tr" style="padding-bottom:5px;">
-					<div class="_td">		
-						<%=link_to image_tag(User.find(@poll.user.id).icon.url(:thumb), size: '42x42'), "https://www.facebook.com/"+@poll.user.facebook.identifier%>		
-					</div>	
-					<div class="_td" style="padding-left:20px; line-height: 26px; font-size: 24px; font-family: Microsoft JhengHei">		
-						<%= @poll.title%>
-					</div>		
-					<div class="_td" style="padding-left:10px; font-size: 10px; width: 98px; font-family: Microsoft JhengHei">		
-						<%= time_ago_in_words(@poll.created_at)%>之前
-					</div>
-				</div>	
-				<div class="_tr" style="font-family: Microsoft JhengHei; font-weight: bold">		
-					<%= pollChoice poll: @poll%>
-				</div>
-			</div>				
-		</div>		
-		<div class="_tr" style="padding-left:20px; padding-bottom:40px; ">				   
-			<div class="_td" style="width: 600px; ">		
-				<div id='chart_<%=@poll.id%>'></div>
-				<%= render_chart(@poll.chart, 'chart_'+@poll.id.to_s) %>	
-			</div>	
-			<div class="_td" style="">
-				<div class="fb-share-button" data-href="<%=request.original_url%>" data-type="button_count"></div>
-				<div class="_tr" style="">		
-					<% if userOptionBlank(id: @poll.id)==1 %>	
-						<%= link_to '投票', {controller: 'polls', action: 'vote', id: @poll.id}, class:"poll_button fancybox open_ajax" %>		
-					<% end %>
-					<% if userOptionBlank(id: @poll.id)==2 %>	
-						<%= link_to '重新投票', {controller: 'polls', action: 'vote', id: @poll.id}, class:"poll_button fancybox open_ajax" %>		
-					<% end %>
-					<% if userOptionBlank(id: @poll.id)==3%>
-						<div style="font-family: Microsoft JhengHei; margin-top: 10px; margin-left: 13px;"><span id="clock_countdown"></span>後</div>
-						<div style="font-family: Microsoft JhengHei;">可重新投票</div>	
-					<% end %>
-				</div>
-				<% if @poll.user.id==session[:user_id]%>	
-				<div class="_tr" style="">
-					<%= link_to '刪除', @poll, method: :delete, data: { confirm: '您確定要刪除 "'+@poll.title+'" 這個主題嗎? (無法回復)' }, class: "poll_button"  %>						
-				</div>
-				<%end%>			
-			</div>	
-			<div class="_td" style="">		
-				<div id='chart_<%=@poll.id+1%>'></div>
-				<%=render_chart(@chart2, 'chart_'+(@poll.id+1).to_s) %>
-			</div>				
-		</div>	
-	
-	<div class="container-fluid " >
-		<div id="info" class="container-fluid span4" >
-		
-			<%=image_tag("loading.gif")%>
-		
-		</div>
-		<div id='reference'class="container-fluid span4 offset2" >
-		<div id='reference_post'>
-			<textarea class='ref_content' placeholder="參考連結..."></textarea><br>
-			<input type='button' value='張貼' class='ref_post' href='#'>
-			<div class="urlive-container"> 
-				<span class="ref_post_loading">Loading...</span>
-			</div>
-		</div>
-		<div id='reference_main'></div>		
-		</div>
-		
-		
-	</div>
-</section>
