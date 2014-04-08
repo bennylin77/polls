@@ -14,8 +14,53 @@ function show_reply(id){
 	$("#"+sub_id).click(function(){return reg_submit_click(sub_id,id);});
 	
 }
+function show_edit(type,id,content1){
 
+	$.ajax({
+		type: "GET",
+		url: "/polls/get_comment_data",
+		data: {_type: type,//main or sub
+			   _id: id, //comment id
+		},
+		success: function(data) {
+			
+			var spantd="<td class='span6 newtd_"+type+"_"+id+"'>";
+			var comment_form="<%=j edit_textarea.html_safe %>";
+			comment_form=comment_form.replace("content_for_replace",data.content);
+			comment_form=comment_form.replace("context_id_for_replace","context_"+type+"_"+id);
+			comment_form=comment_form.replace("id_for_replace",type+"_"+id);
+			contentclass=type+"_content_"+id;
+			$("."+contentclass).hide();
+			$("."+contentclass).after(spantd+comment_form);
+            return data;
+        },	
+		error: function(){
+			alert("Internal server error..");
+		},
+	});
+	
+}
+function edit(content_id){
+	//alert(content_id);
+	var content=$("#context_"+content_id).val();
+	//alert(content);
+	var type=content_id.search("main")>=0 ? "main" : "sub";
+	var id=content_id.substring(content_id.indexOf("_")+1);
+	
+	$.ajax({
+		type: "GET",
+		url: "/polls/edit_comment",
+		data: {_type: type,//main or sub
+			   _id: id, //comment id
+			   _content: content,//comment content
+			},
+		error: function(){
+			alert("Internal server error..");
+		},
+	});
 
+	
+}
 function _like(type,id,but){
 
 	var flag = 0 ;

@@ -1,0 +1,178 @@
+
+module local 1.0;
+
+require {
+	type modemmanager_t;
+	type automount_t;
+	type ksmtuned_t;
+	type user_home_t;
+	type initrc_t;
+	type abrt_dump_oops_t;
+	type user_devpts_t;
+	type user_tmp_t;
+	type auditd_t;
+	type httpd_t;
+	type cupsd_t;
+	type postfix_pickup_t;
+	type hald_t;
+	type apmd_t;
+	type getty_t;
+	type NetworkManager_t;
+	type unconfined_t;
+	type rpcbind_t;
+	type init_t;
+	type usr_t;
+	type syslogd_t;
+	type xserver_port_t;
+	type certmonger_t;
+	type irqbalance_t;
+	type mysqld_port_t;
+	type port_t;
+	type rpm_t;
+	type httpd_sys_content_t;
+	type system_dbusd_t;
+	type mcelog_t;
+	type kernel_t;
+	type httpd_sys_script_t;
+	type user_home_dir_t;
+	type rpcd_t;
+	type setfiles_t;
+	type udev_t;
+	type sshd_t;
+	type anon_inodefs_t;
+	type fprintd_t;
+	type crond_t;
+	type postfix_qmgr_t;
+	type postfix_master_t;
+	class process { getsession setpgid };
+	class chr_file { read write ioctl append };
+	class capability { setuid sys_resource sys_ptrace dac_override dac_read_search chown fsetid kill setgid fowner };
+	class tcp_socket { name_bind name_connect listen };
+	class file { write execute read open getattr execute_no_trans };
+	class dir { getattr search };
+}
+
+#============= httpd_sys_script_t ==============
+allow httpd_sys_script_t NetworkManager_t:dir { getattr search };
+allow httpd_sys_script_t NetworkManager_t:file { read open };
+allow httpd_sys_script_t abrt_dump_oops_t:dir { getattr search };
+allow httpd_sys_script_t abrt_dump_oops_t:file { read open };
+allow httpd_sys_script_t anon_inodefs_t:file { write read };
+allow httpd_sys_script_t apmd_t:dir { getattr search };
+allow httpd_sys_script_t apmd_t:file { read open };
+allow httpd_sys_script_t auditd_t:dir { getattr search };
+allow httpd_sys_script_t auditd_t:file { read open };
+allow httpd_sys_script_t automount_t:dir { getattr search };
+allow httpd_sys_script_t automount_t:file { read open };
+allow httpd_sys_script_t certmonger_t:dir { getattr search };
+allow httpd_sys_script_t certmonger_t:file { read open };
+allow httpd_sys_script_t crond_t:dir { getattr search };
+allow httpd_sys_script_t crond_t:file { read open };
+allow httpd_sys_script_t cupsd_t:dir { getattr search };
+allow httpd_sys_script_t cupsd_t:file { read open };
+allow httpd_sys_script_t getty_t:dir { getattr search };
+allow httpd_sys_script_t getty_t:file { read open };
+allow httpd_sys_script_t hald_t:dir { getattr search };
+allow httpd_sys_script_t hald_t:file { read open };
+allow httpd_sys_script_t httpd_t:dir { getattr search };
+allow httpd_sys_script_t httpd_t:file { read open };
+allow httpd_sys_script_t init_t:dir { getattr search };
+allow httpd_sys_script_t init_t:file { read open };
+allow httpd_sys_script_t initrc_t:dir { getattr search };
+allow httpd_sys_script_t initrc_t:file { read open };
+allow httpd_sys_script_t irqbalance_t:dir { getattr search };
+allow httpd_sys_script_t irqbalance_t:file { read open };
+allow httpd_sys_script_t kernel_t:dir { getattr search };
+allow httpd_sys_script_t kernel_t:file { read open };
+allow httpd_sys_script_t ksmtuned_t:dir { getattr search };
+allow httpd_sys_script_t ksmtuned_t:file { read open };
+allow httpd_sys_script_t mcelog_t:dir { getattr search };
+allow httpd_sys_script_t mcelog_t:file { read open };
+allow httpd_sys_script_t modemmanager_t:dir { getattr search };
+allow httpd_sys_script_t modemmanager_t:file { read open };
+
+#!!!! This avc can be allowed using one of the these booleans:
+#     httpd_can_network_connect, httpd_can_network_connect_db
+allow httpd_sys_script_t mysqld_port_t:tcp_socket name_connect;
+allow httpd_sys_script_t postfix_master_t:dir { getattr search };
+allow httpd_sys_script_t postfix_master_t:file { read open };
+allow httpd_sys_script_t postfix_pickup_t:dir { getattr search };
+allow httpd_sys_script_t postfix_pickup_t:file { read open };
+allow httpd_sys_script_t postfix_qmgr_t:dir { getattr search };
+allow httpd_sys_script_t postfix_qmgr_t:file { read open };
+allow httpd_sys_script_t rpcbind_t:dir { getattr search };
+allow httpd_sys_script_t rpcbind_t:file { read open };
+allow httpd_sys_script_t rpcd_t:dir { getattr search };
+allow httpd_sys_script_t rpcd_t:file { read open };
+allow httpd_sys_script_t rpm_t:dir { getattr search };
+allow httpd_sys_script_t rpm_t:file { read open };
+allow httpd_sys_script_t self:capability { setuid sys_resource sys_ptrace dac_override dac_read_search chown fsetid kill setgid fowner };
+allow httpd_sys_script_t self:process { getsession setpgid };
+
+#!!!! This avc can be allowed using one of the these booleans:
+#     allow_ypbind, httpd_can_network_connect
+allow httpd_sys_script_t self:tcp_socket listen;
+allow httpd_sys_script_t sshd_t:dir { getattr search };
+allow httpd_sys_script_t sshd_t:file { read open };
+allow httpd_sys_script_t syslogd_t:dir { getattr search };
+allow httpd_sys_script_t syslogd_t:file { read open };
+allow httpd_sys_script_t system_dbusd_t:dir { getattr search };
+allow httpd_sys_script_t system_dbusd_t:file { read open };
+allow httpd_sys_script_t udev_t:dir { getattr search };
+allow httpd_sys_script_t udev_t:file { read open };
+allow httpd_sys_script_t unconfined_t:dir { getattr search };
+allow httpd_sys_script_t unconfined_t:file { read open };
+allow httpd_sys_script_t user_devpts_t:chr_file { read write ioctl append };
+
+#!!!! This avc can be allowed using the boolean 'httpd_enable_homedirs'
+allow httpd_sys_script_t user_home_dir_t:dir { search getattr };
+
+#!!!! This avc can be allowed using the boolean 'httpd_enable_homedirs'
+allow httpd_sys_script_t user_home_t:dir { search getattr };
+
+#!!!! This avc can be allowed using the boolean 'httpd_enable_homedirs'
+allow httpd_sys_script_t user_home_t:file { read getattr open };
+allow httpd_sys_script_t user_tmp_t:dir { search getattr };
+allow httpd_sys_script_t usr_t:file { execute execute_no_trans };
+
+#============= httpd_t ==============
+allow httpd_t NetworkManager_t:dir getattr;
+allow httpd_t abrt_dump_oops_t:dir getattr;
+allow httpd_t apmd_t:dir getattr;
+allow httpd_t auditd_t:dir getattr;
+allow httpd_t automount_t:dir getattr;
+allow httpd_t certmonger_t:dir getattr;
+allow httpd_t crond_t:dir getattr;
+allow httpd_t cupsd_t:dir getattr;
+allow httpd_t fprintd_t:dir getattr;
+allow httpd_t getty_t:dir getattr;
+allow httpd_t hald_t:dir getattr;
+allow httpd_t init_t:dir getattr;
+allow httpd_t initrc_t:dir getattr;
+allow httpd_t irqbalance_t:dir getattr;
+allow httpd_t kernel_t:dir getattr;
+allow httpd_t ksmtuned_t:dir getattr;
+allow httpd_t mcelog_t:dir getattr;
+allow httpd_t modemmanager_t:dir getattr;
+
+#!!!! This avc can be allowed using the boolean 'allow_ypbind'
+allow httpd_t port_t:tcp_socket name_bind;
+allow httpd_t postfix_master_t:dir getattr;
+allow httpd_t postfix_pickup_t:dir getattr;
+allow httpd_t postfix_qmgr_t:dir getattr;
+allow httpd_t rpcbind_t:dir getattr;
+allow httpd_t rpcd_t:dir getattr;
+
+#!!!! This avc can be allowed using the boolean 'httpd_run_stickshift'
+allow httpd_t self:capability fowner;
+allow httpd_t self:capability sys_ptrace;
+allow httpd_t sshd_t:dir getattr;
+allow httpd_t syslogd_t:dir getattr;
+allow httpd_t system_dbusd_t:dir getattr;
+allow httpd_t udev_t:dir getattr;
+allow httpd_t unconfined_t:dir getattr;
+allow httpd_t usr_t:file execute;
+allow httpd_t xserver_port_t:tcp_socket name_bind;
+
+#============= setfiles_t ==============
+allow setfiles_t httpd_sys_content_t:file write;

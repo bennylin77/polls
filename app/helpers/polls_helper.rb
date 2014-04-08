@@ -32,6 +32,14 @@ def replybutton(i)
 	return html
 end
 
+def editbutton(type,i,content)
+	html=""
+	html<<'<button class="btn btn-mini btn-primary disabled" type="button" onclick="show_edit('
+	html<<"'"<<type<<"','"<<i.to_s<<"','"<<content.to_s<<"'"
+	html<<')">修改</button>'
+	return html
+end
+
 def reply_left_border_css(poll_id,poll_option_id)
 	html=""
 	html<<"solid 6px "
@@ -47,9 +55,14 @@ def usr_img_tag(usr_img_url)
 	return image_tag(usr_img_url, :class=>"img", size:"35x35")
 end
 
-def reply_textarea
-	return "<textarea class='field span3' placeholder='我要留言...' rows='3' ></textarea><button class='btn btn-mini disabled' type='button' onclick='_subreply(this);' >送出</button>"
-	
+def edit_textarea
+	html=""
+	html<<"<textarea class='field span3' rows='3' id='context_id_for_replace'>"
+	html<<"content_for_replace"
+	html<<"</textarea>"
+	html<<"<button class='btn btn-mini disabled' type='button' onclick='edit("
+	html<<'"id_for_replace");'<<"'>送出</button>"
+	return html
 end
 
 def get_color(poll_id,poll_option_id)

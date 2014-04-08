@@ -314,5 +314,39 @@ class PollsController < ApplicationController
 	end
   end
   
+  def edit_comment
+	@id=params[:_id]
+	@type=params[:_type]
+	@content=params[:_content]
 
+	if @type=="main"
+		@comment=Comment.find(@id)
+		@comment.content=@content
+		@comment.save!
+	else
+		@subcomment=SubComment.find(@id)
+		@subcomment.content=@content
+		@subcomment.save!
+	end
+	respond_to do |format|
+		format.js {}
+	end
+	
+  end
+  def get_comment_data
+    @id=params[:_id]
+	@type=params[:_type]
+	if @type=="main"
+		@comment=Comment.find(@id)
+		
+	else
+		@comment=SubComment.find(@id)
+		
+	end
+	respond_to do |format|
+		format.json  { render :json => @comment.to_json }
+	end
+	#render :json => @comment
+  end
+  
 end

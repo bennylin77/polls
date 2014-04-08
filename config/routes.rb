@@ -9,7 +9,8 @@ Polls::Application.routes.draw do
   get   "polls/createcomment"
   get   "polls/get_user_info"
   get 	"polls/like_control"
- # get   "polls/sub_reply"
+  get   "polls/edit_comment"
+  get   "polls/get_comment_data"
   root :to => 'polls#index'
   
   resources :polls
