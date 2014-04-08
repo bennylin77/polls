@@ -1,3 +1,4 @@
+# encoding: utf-8
 module PollsHelper
 
 def usr_page(username,userid)
@@ -73,9 +74,4 @@ def get_color(poll_id,poll_option_id)
   	Poll.find(poll_id).poll_options.order("id ASC").each_with_index do |o, index|
   		if poll_option_id == o.id
   			return Polls::Application.config.chartcolor[index]
-  		end
-  	end
-  	return "transparent"   
-end
-
 end

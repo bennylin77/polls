@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class PollsController < ApplicationController
-  before_filter :checkLogin, only: [:new, :create, :vote]
+  before_filter :checkLogin, only: [:new, :create, :vote, :refPost]
   before_filter :checkUser,  only: [:destroy]
     
   def index
@@ -210,6 +210,99 @@ class PollsController < ApplicationController
   
   def fbComment
     @poll_option = PollOption.find(params[:poll_option_id])    
+  end
+  
+  def referenceDemo
+    @poll=Poll.find(22);
+  end
+  
+  def reference
+    poll=Poll.find(params[:poll_id])  
+    references=Array.new
+    poll.references.order('created_at ASC').each do |a|
+      references<<
+      {
+        id: a.id,
+        link: a.link,
+        accept: a.reference_accepts.size,
+        click:  a.reference_clicks.size,
+        accept_c: a.reference_accepts.where(user_id: session[:user_id]).first.blank?,
+        dele_c: a.user_id==session[:user_id]                 
+      }
+    end  
+    render json: references.to_json          
+  end
+  
+  def refPost
+    ref=Reference.new(link: params[:link], kind: GLOBAL_VAR['link'] )
+    poll=Poll.find(params[:poll_id])
+    user=User.find(session[:user_id])
+    user_option=nil
+    poll.poll_options.each do |o|
+      if !UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first.blank?
+        user_option=UserOption.where(user_id: session[:user_id], poll_option_id: o.id).first  
+      end
+    end    
+    
+    ref.user=user
+    ref.poll=poll
+    ref.poll_option=user_option.poll_option
+    ref.save!
+    
+    render json: { id: ref.id, 
+                   link: ref.link, 
+                   accept:   ref.reference_accepts.size, 
+                   click:    ref.reference_clicks.size, 
+                   accept_c: ref.reference_accepts.where(user_id: session[:user_id]).first.blank?,
+                   dele_c:   ref.user_id==session[:user_id]  }.to_json   
+  end
+  
+  def refAccept
+    ref=Reference.find(params[:reference_id] )               
+    if params[:accept]=='true'
+      if ref.reference_accepts.where(user_id: session[:user_id]).first.blank?
+        ref_accept=ReferenceAccept.new
+        ref_accept.user=User.find(session[:user_id])
+        ref_accept.reference=ref
+        ref_accept.save!
+        render json: {success: true, reference_id: ref.id, count: ref.reference_accepts.size, accept_c: true}      
+      else
+        render json: {success: false, reference_id: ref.id, accept_c: true}
+      end
+    else
+      if !ref.reference_accepts.where(user_id: session[:user_id]).first.blank?
+        ref.reference_accepts.where(user_id: session[:user_id]).first.destroy
+        render json: {success: true, reference_id: ref.id, count: ref.reference_accepts.size, accept_c: false}     
+      else
+        render json: {success: false, reference_id: ref.id, accept_c: false}
+      end      
+    end    
+  end
+
+  def refClick
+    ref=Reference.find(params[:reference_id] )     
+    if ref.reference_clicks.where(user_id: session[:user_id]).first.blank?
+      ref_click=ReferenceClick.new
+      ref_click.user=User.find(session[:user_id])
+      ref_click.reference=ref
+      ref_click.save!
+      render json: {success: true, reference_id: ref.id, count: ref.reference_clicks.size}      
+    else
+      render json: {success: false, reference_id: ref.id}
+    end    
+  end  
+  
+  def refDelete
+    ref=Reference.find(params[:reference_id])  
+    if ref.user_id==session[:user_id]
+      ref.reference_clicks.clear
+      ref.reference_accepts.clear
+      ref.destroy
+      render json: {success: true, reference_id: params[:reference_id]}      
+    else
+      render json: {success: false, reference_id: params[:reference_id]}
+    end     
+    
   end
   
   def get_user_info
