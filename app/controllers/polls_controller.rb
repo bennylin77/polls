@@ -246,15 +246,20 @@ class PollsController < ApplicationController
     
     ref.user=user
     ref.poll=poll
-    ref.poll_option=user_option.poll_option
-    ref.save!
-    
-    render json: { id: ref.id, 
-                   link: ref.link, 
-                   accept:   ref.reference_accepts.size, 
-                   click:    ref.reference_clicks.size, 
-                   accept_c: ref.reference_accepts.where(user_id: session[:user_id]).first.blank?,
-                   dele_c:   ref.user_id==session[:user_id]  }.to_json   
+    if !user_option.blank?
+      ref.poll_option=user_option.poll_option
+      ref.save!
+      render json: { 
+                     success: true,
+                     id: ref.id, 
+                     link: ref.link, 
+                     accept:   ref.reference_accepts.size, 
+                     click:    ref.reference_clicks.size, 
+                     accept_c: ref.reference_accepts.where(user_id: session[:user_id]).first.blank?,
+                     dele_c:   ref.user_id==session[:user_id]  }.to_json     
+    else
+      render json: {success: false, title: '請先投票, 謝謝!', message: '張貼失敗'}
+    end 
   end
   
   def refAccept
