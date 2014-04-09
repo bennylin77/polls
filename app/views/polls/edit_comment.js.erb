@@ -1,4 +1,8 @@
-
 $(".newtd_<%=@type%>_<%=@id%>").remove();
-$(".context_<%=@type%>_<%=@id%>").text("<%=j @content.html_safe%>");
+if("<%=j @content%>"!=""){
+$(".context_<%=@type%>_<%=@id%>").text("<%=j @content%>");
 $(".<%=@type%>_content_<%=@id%>").show();
+}
+else{
+$(".<%=@type%>_content_<%=@id%>").parent().prev().remove();//remove the row of photo and name 
+}

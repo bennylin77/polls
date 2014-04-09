@@ -423,12 +423,21 @@ class PollsController < ApplicationController
 
 	if @type=="main"
 		@comment=Comment.find(@id)
+		@like = LikeOption.where(:comment_id=>@id)
+	else
+		@comment=SubComment.find(@id)
+		@like = LikeOption.where(:sub_comment_id=>@id)
+		#@subcomment.content=@content
+		#@subcomment.save!
+	end
+	if @content==""
+		@like.all.each do |l|
+			l.destroy
+		end
+		@comment.destroy
+	else
 		@comment.content=@content
 		@comment.save!
-	else
-		@subcomment=SubComment.find(@id)
-		@subcomment.content=@content
-		@subcomment.save!
 	end
 	#@content.gsub! "\n", '<br>'
 	respond_to do |format|

@@ -45,8 +45,7 @@ function show_edit(type,id){
 function edit(content_id){
 	//
 	var content=$("#edit_context_"+content_id).val();
-	//content=content.replace(/\n/g,"<br />");
-	//alert(content);
+
 	if(content==""&&!confirm("您確定要刪除此篇留言?"))
 		return;
 	var type=content_id.search("main")>=0 ? "main" : "sub";

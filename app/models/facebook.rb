@@ -35,7 +35,7 @@ class Facebook < ActiveRecord::Base
 
       _fb_user_ = find_or_initialize_by_identifier(fb_user.identifier.try(:to_s))
       _fb_user_.access_token = fb_user.access_token.access_token
-      _fb_user_.save!
+      _fb_user_.save! 
       fb_current_user=_fb_user_.profile
     
       if _fb_user_.user.nil?                                                            # first time login user   

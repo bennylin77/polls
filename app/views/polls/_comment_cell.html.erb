@@ -48,7 +48,7 @@
 			<%if type=="main" %>
 				<%=replybutton(c.id).html_safe%>
 			<%end%>
-			<%if c.user_id==session[:user_id]%>
+			<%if c.user_id==session[:user_id]&&type=="sub"%>
 				<%=editbutton(type,c.id).html_safe%>
 			<%end%>
 		<%end%>
