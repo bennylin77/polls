@@ -29,7 +29,7 @@ function show_edit(type,id){
 			var spantd="<td class='span6 newtd_"+type+"_"+id+"'>";
 			var comment_form="<%=j edit_textarea.html_safe %>";
 			comment_form=comment_form.replace("content_for_replace",data.content);
-			comment_form=comment_form.replace("context_id_for_replace","context_"+type+"_"+id);
+			comment_form=comment_form.replace("context_id_for_replace","edit_context_"+type+"_"+id);
 			comment_form=comment_form.replace("id_for_replace",type+"_"+id);
 			contentclass=type+"_content_"+id;
 			$("."+contentclass).hide();
@@ -43,9 +43,12 @@ function show_edit(type,id){
 	
 }
 function edit(content_id){
-	//alert(content_id);
-	var content=$("#context_"+content_id).val();
+	//
+	var content=$("#edit_context_"+content_id).val();
+	//content=content.replace(/\n/g,"<br />");
 	//alert(content);
+	if(content==""&&!confirm("您確定要刪除此篇留言?"))
+		return;
 	var type=content_id.search("main")>=0 ? "main" : "sub";
 	var id=content_id.substring(content_id.indexOf("_")+1);
 	
@@ -60,13 +63,12 @@ function edit(content_id){
 			alert("Internal server error..");
 		},
 	});
-
 	
 }
 function _like(type,id,but){
 
 	var flag = 0 ;
-	if(but.innerHTML=="收回讚")
+	if(but.innerHTML=="收回")
 		flag = 1;
 	
 	$.ajax({

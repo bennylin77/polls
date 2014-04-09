@@ -33,13 +33,16 @@
 	<%end%>
 <%end%>
 	<td class="<%=reply_table_content_span%> <%=type%>_content_<%=c.id%>">
+		
 		<contenttext class="context_<%=type%>_<%=c.id%>"><%=c.content.to_s%></contenttext>
+		
 		<p style="margin-left:20px;margin-top:2px">
 		<%if type=="main"%>
-			共 <span id="main_sp_<%=c.id.to_s%>"><%=LikeOption.where(:comment_id=>c.id).count.to_s%></span> 人按讚 
+			共 <span id="main_sp_<%=c.id.to_s%>"><%=LikeOption.where(:comment_id=>c.id).count.to_s%></span> 人同意
 		<%else%>
-			共 <span id="sub_sp_<%=c.id.to_s%>"><%=LikeOption.where(:sub_comment_id=>c.id).count.to_s%></span> 人按讚 
+			共 <span id="sub_sp_<%=c.id.to_s%>"><%=LikeOption.where(:sub_comment_id=>c.id).count.to_s%></span> 人同意
 		<%end%>			
+		
 		<%unless session[:user_id].blank?%>
 			<%=likebutton(type,c.id).html_safe%>
 			<%if type=="main" %>

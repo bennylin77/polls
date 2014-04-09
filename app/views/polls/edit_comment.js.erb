@@ -1,4 +1,4 @@
-//alert("<%=@content%>");
+
 $(".newtd_<%=@type%>_<%=@id%>").remove();
-$(".context_<%=@type%>_<%=@id%>").text("<%=@content%>");
+$(".context_<%=@type%>_<%=@id%>").text("<%=j @content.html_safe%>");
 $(".<%=@type%>_content_<%=@id%>").show();

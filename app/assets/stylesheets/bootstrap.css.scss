@@ -569,10 +569,7 @@ small {
   font-size: 85%;
   
 }
-contenttext {
-  font-size: 100%;
-  font-weight: normal;
-}
+
 strong {
   font-weight: bold;
 }
@@ -824,7 +821,7 @@ address {
   line-height: 20px;
 }
 code,
-pre {
+/*pre {
   padding: 0 3px 2px;
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 12px;
@@ -832,7 +829,7 @@ pre {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-}
+}*/
 code {
   padding: 2px 4px;
   color: #d14;
@@ -840,7 +837,7 @@ code {
   border: 1px solid #e1e1e8;
   white-space: nowrap;
 }
-pre {
+/*pre {
   display: block;
   padding: 9.5px;
   margin: 0 0 10px;
@@ -856,18 +853,18 @@ pre {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-}
+}*/
 pre.prettyprint {
   margin-bottom: 20px;
 }
-pre code {
+/*pre code {
   padding: 0;
   color: inherit;
   white-space: pre;
   white-space: pre-wrap;
   background-color: transparent;
   border: 0;
-}
+}*/
 .pre-scrollable {
   max-height: 340px;
   overflow-y: scroll;
@@ -6348,6 +6345,16 @@ button.close {
    border-right-style:none;
    border-top-style:none*/
 }
+
+contenttext {
+  font-size: 100%;
+  font-weight: normal;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+}
+
 /*
 .table tbody tr.useroption >td{
 border:6px;

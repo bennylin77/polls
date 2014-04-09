@@ -12,32 +12,32 @@ def reply_table_content_span
 	return "span6"
 end
 def likebutton(type,i)
-	context = "讚"
+	context = "同意"
  	flag = 0
 	User.find(session[:user_id]).like_options.each do |l|
 		if (l.comment_id == i and type=="main") or (l.sub_comment_id == i and type=="sub")
-			context = "收回讚"	
+			context = "收回"	
 			flag = 1
 		end
 	end		
 	
 
-	return '<button id="'+type+"_"+i.to_s+'"class="btn btn-mini btn-primary disabled" type="button"' +'onclick="_like('+"'"+type+"'"+','+i.to_s+',this);">'+context+'</button>'
+	return '<a href="javascript: void(0)" id="like_'+type+"_"+i.to_s+ '" onclick="_like('+"'"+type+"'"+','+i.to_s+',this);">'+context+'</a>'
 end
 
 def replybutton(i)
 	html=""
-	html<<'<button class="btn btn-mini btn-primary disabled" type="button" onclick="show_reply('
-	html<<i.to_s
-	html<<')">回覆</button>'
+	html<<'<a href="javascript: void(0)" onclick="show_reply('<<i.to_s
+	html<<')">回覆</a>'
+	
 	return html
 end
 
 def editbutton(type,i)
 	html=""
-	html<<'<button class="btn btn-mini btn-primary disabled" type="button" onclick="show_edit('
+	html<<'<a href="javascript: void(0)" onclick="show_edit('
 	html<<"'"<<type<<"','"<<i.to_s<<"'"
-	html<<')">修改</button>'
+	html<<')">修改</a>'
 	return html
 end
 

@@ -339,11 +339,15 @@ class PollsController < ApplicationController
 	end
 	
 	if request.post?
+		@poll_id=params[:comment][:poll_id]
+		@user_id=session[:user_id]
+		@content=params[:comment][:content]
+		
 		if params[:comment][:type] == "main"
 			@newcomment1 = Comment.new
-			@newcomment1.user_id=session[:user_id]
-			@newcomment1.poll_id=params[:comment][:poll_id]
-			@newcomment1.content=params[:comment][:content]
+			@newcomment1.user_id=@user_id
+			@newcomment1.poll_id=@poll_id
+			@newcomment1.content=@content
 			
 			@newcomment1.poll_option_id = @cur_option_id
 		
@@ -355,9 +359,9 @@ class PollsController < ApplicationController
 		elsif params[:comment][:type] == "sub"  # sub_comment with method GET (request.get?)
 		#	@flag = 0
 			@sub_com = SubComment.new
-			@sub_com.user_id=session[:user_id]
+			@sub_com.user_id=@user_id
 			@sub_com.comment_id=params[:comment][:comment_id]
-			@sub_com.content=params[:comment][:content]
+			@sub_com.content=@content
 	
 			@sub_com.poll_option_id = @cur_option_id			
 		
@@ -387,7 +391,7 @@ class PollsController < ApplicationController
   			@like = LikeOption.where(:user_id=>session[:user_id], :sub_comment_id=>params[:_id]).first
   		end	
   		@like.destroy
-  		@div_content = "讚"
+  		@div_content = "同意"
   	else
 		@like = LikeOption.new(:user_id=>session[:user_id])
 		if @type=="main"
@@ -396,7 +400,7 @@ class PollsController < ApplicationController
 			@like.sub_comment_id = params[:_id]
 		end
 		@like.save!
-		@div_content = "收回讚"
+		@div_content = "收回"
 	end
 	
 	if @type=="main"
@@ -426,6 +430,7 @@ class PollsController < ApplicationController
 		@subcomment.content=@content
 		@subcomment.save!
 	end
+	#@content.gsub! "\n", '<br>'
 	respond_to do |format|
 		format.js {}
 	end
