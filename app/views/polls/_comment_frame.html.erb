@@ -9,6 +9,8 @@ function show_reply(id){
 	comment_form=comment_form.replace("id_for_replace",id);
 	comment_form=comment_form.replace("com_textarea","com_textarea_"+id);
 	comment_form=comment_form.replace("sub_submit","sub_submit_"+id);
+	comment_form=comment_form.replace("comment_form","comment_form_"+id);
+	comment_form=comment_form.replace("#comment_form","#comment_form_"+id);
 	$("#last_"+id).after(tr+spantd+comment_form+"</td></tr>");
 	var sub_id="sub_submit_"+id;
 	$("#"+sub_id).click(function(){return reg_submit_click(sub_id,id);});
