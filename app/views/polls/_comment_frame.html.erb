@@ -11,6 +11,7 @@ function show_reply(id){
 	comment_form=comment_form.replace("sub_submit","sub_submit_"+id);
 	comment_form=comment_form.replace("comment_form","comment_form_"+id);
 	comment_form=comment_form.replace("#comment_form","#comment_form_"+id);
+	$("#reply_but_"+id).hide()
 	$("#last_"+id).after(tr+spantd+comment_form+"</td></tr>");
 	var sub_id="sub_submit_"+id;
 	$("#"+sub_id).click(function(){return reg_submit_click(sub_id,id);});

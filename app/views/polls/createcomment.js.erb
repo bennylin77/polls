@@ -5,6 +5,7 @@ $('#subreply_<%=@last_id.to_s%>').remove();
 var comment_cell='<%= escape_javascript(render :partial=>'comment_cell', :locals=>{:_type=>"sub", :_comment=>@sub_com, :_userinfo=>@cur_user_fb_info, :_main_comment=>@sub_com.comment, :_count=>@sub_com.comment.sub_comments.count}) %>';
 element.after(comment_cell);  //sub  render comment_cell
 element.removeAttr('id');
+$("#reply_but_<%=@last_id%>").show()
 <%else%>
 $('#com_textarea').val('') ;
 var comment_cell='<%= escape_javascript(render :partial=>'comment_cell', :locals=>{:_type=>"main", :_comment=>@comment, :_userinfo=>@cur_user_fb_info}) %>';

@@ -105,7 +105,7 @@ $(document).ready(function()
 		if(val.dele_c)
 		{
 			var newSpanDel = $(document.createElement('span')).attr({ id: 'urlive-container_del_'+val.id, class: 'ref_main_urlive-container-del'});
-			newSpanDel.append(" | 刪除");
+			newSpanDel.append(" ． 刪除");
 			$( newSpanDel ).bind( "click", function() {		
 				var request =$.ajax({
 					url: "/polls/refDelete",
@@ -204,7 +204,18 @@ $(document).ready(function()
 <%if !session[:user_id].blank?%>	
 <div id='reference_post'>
 	<textarea class='ref_content' placeholder="參考連結..."></textarea><br>
-	<span class='ref_post ref_button'>張貼</span>
+	<% if userOptionBlank(id: @poll.id)==1 %>
+		<script>
+			$("textarea.ref_content").attr({"placeholder":"請先投票!","readonly":''});
+		</script>
+		<p align="right">
+		<% link_to '投票', {controller: 'polls', action: 'vote', id: @poll.id}, class:"ref_button btn-fancybox open_ajax " %>
+		</p>
+	<%else%>
+		<span class='ref_post ref_button'>張貼</span>
+		
+	<% end %>
+	
 	<div class="urlive-container"> 
 		<span class="ref_post_loading">Loading...</span>
 	</div>

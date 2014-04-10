@@ -6347,20 +6347,32 @@ button.close {
 }
 
 contenttext {
-  font-size: 100%;
-  font-weight: normal;
+  font-size: 14px;
+  //font-weight: normal;
   word-break: break-all;
   word-wrap: break-word;
   white-space: pre;
   white-space: pre-wrap;
+  font-weight: normal;
+  font-family: Microsoft JhengHei;
 }
 
-/*
-.table tbody tr.useroption >td{
-border:6px;
-border-left-style:solid; 
+.comment-button-container-op-right{
+	margin-top:4px;
+	display: inline;
+	float:right;
+	margin-right: 5px;
+	font-size:17px;
+}
+.comment-likecount-container-op-left{
+	margin-top:4px;
+	display: inline;
 	
 }
-*/
 
+.comment-likecount{
+	font-size:17px;
+	margin-bottom:4px;
+	font-weight:normal;
+}
 

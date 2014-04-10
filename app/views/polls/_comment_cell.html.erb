@@ -36,23 +36,33 @@
 		
 		<contenttext class="context_<%=type%>_<%=c.id%>"><%=c.content.to_s%></contenttext>
 		
-		<p style="margin-left:20px;margin-top:2px">
-		<%if type=="main"%>
-			共 <span id="main_sp_<%=c.id.to_s%>"><%=LikeOption.where(:comment_id=>c.id).count.to_s%></span> 人同意
-		<%else%>
-			共 <span id="sub_sp_<%=c.id.to_s%>"><%=LikeOption.where(:sub_comment_id=>c.id).count.to_s%></span> 人同意
-		<%end%>			
-		
-		<%unless session[:user_id].blank?%>
-			<%=likebutton(type,c.id).html_safe%>
-			<%if type=="main" %>
-				<%=replybutton(c.id).html_safe%>
+		<br>
+		<div class="comment-likecount-container-op-left">
+		<span class="comment-likecount">
+			<img title="接受" height="18px" width="18px" alt="接受" src="/assets/accept.png">
+			<%if type=="main"%>
+			<span id="main_sp_<%=c.id.to_s%>"><%=LikeOption.where(:comment_id=>c.id).count.to_s%></span>
+			<%else%>
+			<span id="sub_sp_<%=c.id.to_s%>"><%=LikeOption.where(:sub_comment_id=>c.id).count.to_s%></span>
 			<%end%>
+		</span>	
+		</div>
+
+		
+		<div class="comment-button-container-op-right">
+		<%unless session[:user_id].blank?%>
+		
+		<%=likebutton(type,c.id).html_safe%>
+		<%if type=="main" and userOptionBlank(id: @poll.id)!=1 %>
+			<%=but_spilt_bar.html_safe%>
+			<%=replybutton(c.id).html_safe%>
+		<%end%>
 			<%if c.user_id==session[:user_id]&&type=="sub"%>
+			<%=but_spilt_bar.html_safe%>
 				<%=editbutton(type,c.id).html_safe%>
 			<%end%>
 		<%end%>
-		</p>
+		</div>
 	  </td>
 	</tr>
 <% if type=="main" %>

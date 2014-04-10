@@ -391,7 +391,7 @@ class PollsController < ApplicationController
   			@like = LikeOption.where(:user_id=>session[:user_id], :sub_comment_id=>params[:_id]).first
   		end	
   		@like.destroy
-  		@div_content = "同意"
+  		@div_content = "接受"
   	else
 		@like = LikeOption.new(:user_id=>session[:user_id])
 		if @type=="main"
